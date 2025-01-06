@@ -22,7 +22,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation"
 import { Input } from "../ui/input"
 import dynamic from "next/dynamic"
-
+import { createNote } from "@/lib/actions"
+import { toast } from 'react-toastify'
 
 const TipTap = dynamic(() => import("@/components/_custom/Tiptap"), { ssr: false })
 
@@ -53,14 +54,33 @@ const CreateNoteForm = () => {
         }
     })
 
+    const removePTagsInListItems = (htmlString: string): string => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+
+        const listItems = doc.querySelectorAll('li > p');
+
+        listItems.forEach(pTag => {
+            const parentLi = pTag.parentElement;
+            if (parentLi) {
+                while (pTag.firstChild) {
+                    parentLi.insertBefore(pTag.firstChild, pTag);
+                }
+                parentLi.removeChild(pTag);
+            }
+        });
+
+        return doc.body.innerHTML;
+    };
+
 
     const Router = useRouter()
 
     return (
         <div className='w-full px-2 py-4'>
-            <div className="w-full px-2 py-4 flex align-middle ">.
-                <Button onClick={() => Router.back()} variant='outline' className=' '>
-                    <IoIosArrowBack className='w-6 h-6' />
+            <div className="w-full px-2 py-4 flex align-middle ">
+                <Button onClick={() => Router.back()} variant='outline' className=''>
+                    <IoIosArrowBack className='w-6 h-6' /> Back
                 </Button>
                 <h3 className='mx-auto  text-lg font-semibold text-primary'>
                     Creating Note
@@ -68,10 +88,28 @@ const CreateNoteForm = () => {
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(
-                    (data) => {
-                        console.log(form.formState.isSubmitting)
-                        //    WAIT FOR THREE SECS
-                        setTimeout(() => console.log(data), 3000)
+                    async (data) => {
+                        const { title, content, date } = data
+
+                        const cleanContent = removePTagsInListItems(content)
+
+                        const NewNoteData = {
+                            title,
+                            content: cleanContent,
+                            writer: 'user_1',
+                            date
+                        }
+
+                        const newNoteRes = await createNote(NewNoteData)
+
+                        if (newNoteRes.success) {
+                            toast.success('Note created successfully');
+                            form.reset()
+                            form.resetField('content', { defaultValue: '' })
+                        } else {
+                            toast.error('Failed to create note!')
+
+                        }
 
                     }
                 )} className="space-y-8 mx-auto max-w-screen-md bg-secondary p-4 rounded-lg ">
@@ -87,7 +125,9 @@ const CreateNoteForm = () => {
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
-                                <FormDescription>This is your public display name.</FormDescription>
+                                <FormDescription>
+                                    Give your note a title
+                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}

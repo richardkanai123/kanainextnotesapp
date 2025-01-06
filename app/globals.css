@@ -79,17 +79,26 @@ body {
   display: flex;
   flex-direction: column;
 
-  p{
-    width: 100%;
-  }
   ul{
     padding: 5px;
     list-style: disc;
     list-style-position: inside;
-  }
+
+    li{
+      border-bottom: 1px dotted;
+      overflow-x: hidden;
+    }
+  
   strong{
     font-weight: bold;
   }
+
+  p{
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
 
   h1{
     font-weight: bolder;
@@ -110,4 +119,21 @@ body {
   italic{
     font-style: italic;
   }
+
+
+}
+
+.noteDialog{
+  width: 100%;
+
+  ul{
+    padding: 5px;
+    list-style: disc;
+    list-style-position: inside;
+  }
+
+    li{
+      border-bottom: 1px dotted;
+      overflow-x: hidden;
+    }
 }

@@ -13,9 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Note {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  content String
-  writer  String
+model Notes {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  content  String
+  writer   String
+  date     DateTime
+  isPinned Boolean
+}
+
+model Users {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
 }

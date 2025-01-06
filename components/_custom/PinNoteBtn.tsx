@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '../ui/button'
-import { MdBookmarkAdded } from 'react-icons/md'
+import { TiPin } from "react-icons/ti";
 
 const PinNoteBtn = ({ NoteID }: { NoteID: string }) => {
 
@@ -9,8 +9,9 @@ const PinNoteBtn = ({ NoteID }: { NoteID: string }) => {
     }
 
     return (
-        <Button onClick={PinNote} size='icon' variant='ghost' asChild className="absolute top-0 right-0 p-0">
-            <MdBookmarkAdded className="w-6 h-6 text-primary" />
+        <Button onClick={PinNote} variant='ghost' className='' >
+            <TiPin className="w-12 h-12 text-primary" />
+            <span className="sr-only">Pin</span>
         </Button>
     )
 }

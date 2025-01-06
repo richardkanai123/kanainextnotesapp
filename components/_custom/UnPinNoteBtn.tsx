@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '../ui/button'
-import { MdBookmarkRemove } from 'react-icons/md'
+import { RiUnpinFill } from "react-icons/ri";
 
 const UnpinNoteBtn = ({ NoteID }: { NoteID: string }) => {
 
@@ -9,8 +9,8 @@ const UnpinNoteBtn = ({ NoteID }: { NoteID: string }) => {
     }
 
     return (
-        <Button onClick={UnPinNote} variant='ghost' asChild className="absolute top-0 right-0 p-0">
-            <MdBookmarkRemove className="w-6 h-6 text-primary" />
+        <Button onClick={UnPinNote} variant='ghost' asChild className='p-2' >
+            <RiUnpinFill className="w-10 h-10 text-primary" />
         </Button>
     )
 }

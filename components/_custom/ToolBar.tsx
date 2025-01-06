@@ -13,7 +13,11 @@ import { MdFormatListBulleted } from "react-icons/md";
 
 export const TiptapToolbar = ({ editor }: { editor: Editor | null }) => {
     if (!editor) {
-        return null;
+        return (
+            <div className="w-full p-2">
+                <p className="text-sm text-gray-500">Loading Editor...</p>
+            </div>
+        )
     }
 
     return (
@@ -92,6 +96,7 @@ export const TiptapToolbar = ({ editor }: { editor: Editor | null }) => {
                         editor.chain().focus().toggleOrderedList().run()
                         editor.chain().focus().toggleBulletList().run()
                     } else {
+                        // editor.chain().focus().wrapInList('bulletList').run()
                         editor.chain().focus().toggleBulletList().run()
                     }
                 }}>
