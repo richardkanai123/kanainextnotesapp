@@ -9,7 +9,7 @@ const PinNoteBtn = ({ NoteID }: { NoteID: string }) => {
     }
 
     return (
-        <Button onClick={PinNote} variant='ghost' asChild className="absolute top-0 right-0 p-0">
+        <Button onClick={PinNote} size='icon' variant='ghost' asChild className="absolute top-0 right-0 p-0">
             <MdBookmarkAdded className="w-6 h-6 text-primary" />
         </Button>
     )

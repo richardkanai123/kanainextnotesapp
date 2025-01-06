@@ -17,12 +17,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
-import TipTap from "./Tiptap"
 import { LoaderPinwheel } from "lucide-react"
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation"
 import { Input } from "../ui/input"
+import dynamic from "next/dynamic"
 
+
+const TipTap = dynamic(() => import("@/components/_custom/Tiptap"), { ssr: false })
 
 const schema = z.object({
     title: z.string({
