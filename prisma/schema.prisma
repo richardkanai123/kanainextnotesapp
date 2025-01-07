@@ -14,12 +14,16 @@ datasource db {
 }
 
 model Notes {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
-  content  String
-  writer   String
-  date     DateTime
-  isPinned Boolean
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  content    String
+  writer     String
+  date       DateTime
+  isPinned   Boolean
+  sharedWith String[] @default([])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  category   String
 }
 
 model Users {

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { IoAdd, IoCalendarNumber } from "react-icons/io5";
+import { IoCalendarNumber } from "react-icons/io5";
 import {
     Form,
     FormControl,
@@ -17,7 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
-import { LoaderPinwheel } from "lucide-react"
+import { ArrowBigUpDashIcon, LoaderPinwheel } from "lucide-react"
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation"
 import { Input } from "../ui/input"
@@ -26,6 +26,7 @@ import { createNote } from "@/lib/actions"
 import { toast } from 'react-toastify'
 import { noteCategories } from "@/lib/Constants/categories"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
+import { NOTE_TYPE } from "@/lib/Types"
 const TipTap = dynamic(() => import("@/components/_custom/Tiptap"), { ssr: false })
 
 const categoryList = noteCategories.map((category) => category.name).sort(
@@ -52,13 +53,15 @@ const schema = z.object({
 })
 
 
-const CreateNoteForm = () => {
+const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            title: '',
-            content: '',
-            date: new Date()
+            title: note.title,
+            content: note.content,
+            date: new Date(note.date),
+            category: note.category
+
         }
     })
 
@@ -231,8 +234,8 @@ const CreateNoteForm = () => {
                     />
 
                     <Button disabled={form.formState.isSubmitting || form.formState.isValidating || form.formState.isLoading || !form.formState.isValid} className="disabled:bg-opacity-25 flex align-middle" type="submit">
-                        Create Note
-                        {form.formState.isSubmitting ? <LoaderPinwheel className="w-6 h-6 mr-2 animate-spin" /> : <IoAdd className="w-6 h-6 mr-2" />}
+                        Update Note
+                        {form.formState.isSubmitting ? <LoaderPinwheel className="w-6 h-6 mr-2 animate-spin" /> : <ArrowBigUpDashIcon className="w-6 h-6 mr-2" />}
                     </Button>
                 </form>
             </Form>
@@ -240,4 +243,4 @@ const CreateNoteForm = () => {
     )
 }
 
-export default CreateNoteForm
+export default EditNoteForm

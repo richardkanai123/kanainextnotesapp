@@ -20,6 +20,15 @@ export const getNotebyId = async (id: string) => {
     const note = await prisma.notes.findUnique({
         where: {
             id: id
+        }, select: {
+            id: true,
+            title: true,
+            content: true,
+            writer: true,
+            date: true,
+            category: true,
+            isPinned: true,
+            createdAt: true
         }
     })
     
@@ -29,6 +38,7 @@ export const getNotebyId = async (id: string) => {
             note
         }
     }
+
 
     return {    
         success: true,
@@ -57,13 +67,15 @@ export const GetNoteByWriter = async (writer: string) => {
 }    
 
 export const createNote = async (newData: {
-    title: string, content: string, writer: string, date:Date
+    title: string, content: string, writer: string, date:Date, category: string
 }) => {
     const {
         title,
         content,
         writer,
-        date
+        date,
+        category
+
     }=newData
     const note = await prisma.notes.create({
         data: {
@@ -71,6 +83,7 @@ export const createNote = async (newData: {
             content,
             writer,
             date,
+            category,
             isPinned: false
         }
     })

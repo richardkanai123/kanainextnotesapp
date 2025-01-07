@@ -9,48 +9,52 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { DaysFromToday } from "@/lib/utils"
+import { DaysFromToday, FormatDateIntoReadableString, GetCategoryEmoji } from "@/lib/utils"
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { BsSendArrowUpFill } from "react-icons/bs";
-interface NoteDialogProps {
-    id: string;
-    title: string;
-    date: Date;
-    content: string;
-    writer: string;
-    time_created?: string;
-    time_updated?: string;
-    isPinned: boolean;
-}
+import { NOTE_TYPE } from "@/lib/Types";
+import { useRouter } from "next/navigation";
 
 export function NoteDialog({ Note }: {
-    Note: NoteDialogProps
+    Note: NOTE_TYPE
 
 }) {
     const {
         title,
         content,
-        date,
+        createdAt,
+        category,
+        date
     } = Note
 
-    const formattedDate = DaysFromToday(date)
+    const formattedDate = DaysFromToday(createdAt)
+
+    const NoteCategoryEmoji = GetCategoryEmoji(category)
+
+    const readableDate = FormatDateIntoReadableString(date)
+
+    const Router = useRouter()
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline">View</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-screen-sm">
+            <DialogContent className="sm:max-w-screen-sm bg-yellow-300 dark:bg-background">
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription>
-                        {formattedDate}
+                    <DialogDescription className="w-full flex flex-col justify-between gap-1">
+                        <span>Dated: {readableDate}</span>
+                        <span>{NoteCategoryEmoji}:{category} </span>
+                        <span className="text-xs">Created: {formattedDate}</span>
                     </DialogDescription>
                 </DialogHeader>
                 <div className="p-2 noteDialog" dangerouslySetInnerHTML={{ __html: content }} >
                 </div>
 
                 <DialogFooter className="w-full px-2 flex flex-col gap-2 justify-center md:flex-row">
-                    <Button variant='default'>
+                    <Button onClick={() => Router.push(`/edit/${Note.id}`, {
+                        scroll: true
+                    })} variant='default'>
                         Edit Note
                         <EditIcon className="w-4 h-4 mr-2" />
                     </Button>
