@@ -14,6 +14,7 @@ import { EditIcon, Trash2Icon } from "lucide-react";
 import { BsSendArrowUpFill } from "react-icons/bs";
 import { NOTE_TYPE } from "@/lib/Types";
 import { useRouter } from "next/navigation";
+import PinNoteBtn from "./Buttons/PinNoteBtn";
 
 export function NoteDialog({ Note }: {
     Note: NOTE_TYPE
@@ -42,7 +43,7 @@ export function NoteDialog({ Note }: {
             <DialogContent className="sm:max-w-screen-sm bg-yellow-300 dark:bg-background">
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
-                    <DialogDescription className="w-full flex flex-col justify-between gap-1">
+                    <DialogDescription className="w-full flex flex-col justify-between text-left gap-1">
                         <span>Dated: {readableDate}</span>
                         <span>{NoteCategoryEmoji}:{category} </span>
                         <span className="text-xs">Created: {formattedDate}</span>
@@ -51,24 +52,25 @@ export function NoteDialog({ Note }: {
                 <div className="p-2 noteDialog" dangerouslySetInnerHTML={{ __html: content }} >
                 </div>
 
-                <DialogFooter className="w-full px-2 flex flex-col gap-2 justify-center md:flex-row">
+                <DialogFooter className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 items-center content-center justify-center align-middle  ">
+
                     <Button onClick={() => Router.push(`/edit/${Note.id}`, {
                         scroll: true
-                    })} variant='default'>
+                    })} variant='default' className="max-w-[200px]">
                         Edit Note
-                        <EditIcon className="w-4 h-4 mr-2" />
+                        <EditIcon className="w-4 h-4" />
                     </Button>
 
-                    <Button variant='outline'>
+                    <PinNoteBtn NoteID={Note.id} pinned={Note.isPinned} />
+
+                    <Button variant='outline' className="max-w-[200px]">
                         Share Note
-                        <BsSendArrowUpFill className="w-4 h-4 mr-2" />
+                        <BsSendArrowUpFill className="w-4 h-4" />
                     </Button>
-
-                    <Button variant='destructive'>
+                    <Button variant='destructive' className="max-w-[200px]">
                         Delete Note
-                        <Trash2Icon className="w-4 h-4 mr-2" />
+                        <Trash2Icon className="w-4 h-4" />
                     </Button>
-
                 </DialogFooter>
             </DialogContent>
         </Dialog >

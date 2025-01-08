@@ -22,11 +22,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation"
 import { Input } from "../ui/input"
 import dynamic from "next/dynamic"
-import { createNote } from "@/lib/actions"
+import { UpdateNote } from "@/lib/actions"
 import { toast } from 'react-toastify'
 import { noteCategories } from "@/lib/Constants/categories"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
 import { NOTE_TYPE } from "@/lib/Types"
+import { Switch } from "@/components/ui/switch"
+
 const TipTap = dynamic(() => import("@/components/_custom/Tiptap"), { ssr: false })
 
 const categoryList = noteCategories.map((category) => category.name).sort(
@@ -49,7 +51,8 @@ const schema = z.object({
     }),
     category: z.enum(categoryList as [string, ...string[]], {
         message: 'Invalid category'
-    })
+    }),
+    isPinned: z.boolean()
 })
 
 
@@ -60,8 +63,8 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
             title: note.title,
             content: note.content,
             date: new Date(note.date),
-            category: note.category
-
+            category: note.category,
+            isPinned: note.isPinned
         }
     })
 
@@ -100,26 +103,27 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(
                     async (data) => {
-                        const { title, content, date, category } = data
+                        const { title, content, date, category, isPinned } = data
 
                         const cleanContent = removePTagsInListItems(content)
 
-                        const NewNoteData = {
+                        const UpdatedNoteData = {
                             title,
                             content: cleanContent,
                             writer: 'user_1',
                             date,
-                            category
+                            category,
+                            isPinned
                         }
 
-                        const newNoteRes = await createNote(NewNoteData)
 
-                        if (newNoteRes.success) {
-                            toast.success('Note created successfully');
-                            form.reset()
-                            form.resetField('content', { defaultValue: '' })
+                        const UpdatedNoteRes = await UpdateNote(note.id, UpdatedNoteData)
+
+                        if (UpdatedNoteRes.success) {
+                            toast.success('Successfully updated note!');
+                            Router.push('/')
                         } else {
-                            toast.error('Failed to create note!')
+                            toast.error(UpdatedNoteRes.message)
 
                         }
 
@@ -147,9 +151,29 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
 
                     <FormField
                         control={form.control}
+                        name="isPinned"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                <div className="flex align-middle justify-center text-left items-center content-center gap-2">
+                                    <FormLabel>Pinned?</FormLabel>
+                                    <FormControl>
+                                        <Switch
+                                            checked={field.value as boolean}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                </div>
+
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
                         name="category"
                         render={({ field }) => (
                             <FormItem>
+                                <FormLabel>Category</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger >
@@ -210,7 +234,7 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
                                     </PopoverContent>
                                 </Popover>
                                 <FormDescription>
-                                    Date of occurence
+                                    Date of the note (when the note is to used/attended/checked  )
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -234,7 +258,7 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
                     />
 
                     <Button disabled={form.formState.isSubmitting || form.formState.isValidating || form.formState.isLoading || !form.formState.isValid} className="disabled:bg-opacity-25 flex align-middle" type="submit">
-                        Update Note
+                        {form.formState.isSubmitting ? 'Updating...' : 'Update Note'}
                         {form.formState.isSubmitting ? <LoaderPinwheel className="w-6 h-6 mr-2 animate-spin" /> : <ArrowBigUpDashIcon className="w-6 h-6 mr-2" />}
                     </Button>
                 </form>

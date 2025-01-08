@@ -15,7 +15,7 @@ const TipTap = ({
 }) => {
     const editor = useEditor({
         extensions: [
-            StarterKit,
+            StarterKit.configure(),
             Heading.configure({ levels: [1, 2, 3], HTMLAttributes: { class: 'text-lg font-semibold' } }),
             BulletList.configure({ HTMLAttributes: { class: 'list-disc' } }),
             ListItem.configure({ HTMLAttributes: { class: 'list-item' } }),

@@ -1,8 +1,7 @@
 "use client";
 import { formatDistance } from "date-fns";
-import { Card, CardContent } from "../ui/card";
-import PinNoteBtn from "./PinNoteBtn";
-import UnpinNoteBtn from "./UnPinNoteBtn";
+import { Card, CardContent } from "@/components/ui/card";
+import UnpinNoteBtn from "./Buttons/UnPinNoteBtn";
 import { NoteDialog } from "./NoteDialog";
 import { NOTE_TYPE } from "@/lib/Types";
 import { GetCategoryEmoji } from "@/lib/utils";
@@ -33,13 +32,11 @@ const Note_Card = ({ Note }: { Note: NOTE_TYPE }) => {
                     dangerouslySetInnerHTML={{ __html: Note.content }}></section>
             </CardContent>
 
-            <div className="absolute top-0 right-0 p-1 flex align-middle items-center gap-4">
+            <div className="absolute top-0 right-0  flex align-middle items-center gap-2">
                 <NoteDialog Note={Note} />
-                {Note.isPinned ? (
+                {Note.isPinned &&
                     <UnpinNoteBtn NoteID={Note.id} />
-                ) : (
-                    <PinNoteBtn NoteID={Note.id} />
-                )}
+                }
             </div>
         </Card>
     );

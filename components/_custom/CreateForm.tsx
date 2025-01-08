@@ -113,8 +113,7 @@ const CreateNoteForm = () => {
 
                         if (newNoteRes.success) {
                             toast.success('Note created successfully');
-                            form.reset()
-                            form.resetField('content', { defaultValue: '' })
+                            Router.push('/')
                         } else {
                             toast.error('Failed to create note!')
 

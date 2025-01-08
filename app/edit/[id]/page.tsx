@@ -1,6 +1,6 @@
 import EditNoteForm from '@/components/_custom/EditForm'
 import { getNotebyId } from '@/lib/actions'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const EditPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params
@@ -15,8 +15,9 @@ const EditPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     return (
         <div className='w-full flex flex-col' >
             <h1 className="text-2xl font-semibold mb-2">Editing Note</h1>
-
-            <EditNoteForm note={note.note} />
+            <Suspense fallback={<p className="text-sm text-gray-500">Loading...</p>}>
+                <EditNoteForm note={note.note} />
+            </Suspense>
         </div>
     )
 }
