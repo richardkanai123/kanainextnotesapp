@@ -1,12 +1,12 @@
 export type NOTE_TYPE = {
-    id: string;
+   id: string;
     title: string;
     content: string;
-    date: Date;
     writer: string;
+    date: Date;
     isPinned: boolean;
-    sharedWith?: string[];
+    sharedWith: string[];
     createdAt: Date;
-    updatedAt?: Date;
-    category: string
+    updatedAt: Date;
+    category: string;
 }
