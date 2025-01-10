@@ -79,6 +79,12 @@ body {
   display: flex;
   flex-direction: column;
 
+  p{
+    width: 100%;
+    overflow-x: hidden;
+    text-wrap: wrap;
+  }
+
   ul{
     padding: 5px;
     list-style: disc;
@@ -87,16 +93,11 @@ body {
     li{
       border-bottom: 1px dotted;
       overflow-x: hidden;
+      text-wrap: stable;
     }
   
   strong{
     font-weight: bold;
-  }
-
-  p{
-    font-size: 0.8rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
 }
 

@@ -17,7 +17,7 @@ const Note_Card = ({ Note }: { Note: NOTE_TYPE }) => {
     const Note_Date = new Date(Note.createdAt);
 
     return (
-        <Card className="w-full sm:min-w-80 max-w-[350px] min-h-[200px] py-3 px-2 aspect-video bg-yellow-100 rounded-md overflow-hidden relative flex-shrink-0 dark:bg-background ">
+        <Card className="w-full sm:min-w-80 max-w-[350px] min-h-[200px] py-3 px-2 aspect-video bg-yellow-100 rounded-md overflow-hidden relative flex-shrink-0 dark:bg-background animate-in transition-all ease-in ">
             <div className="text-xs font-light text-gray-400 ">
                 <NoteBadge note_Category={Note.category} />
                 <span className="italic ml-2">
