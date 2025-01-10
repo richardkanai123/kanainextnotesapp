@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import UnpinNoteBtn from "./Buttons/UnPinNoteBtn";
 import { NoteDialog } from "./NoteDialog";
 import { NOTE_TYPE } from "@/lib/Types";
-import { GetCategoryEmoji } from "@/lib/utils";
+import NoteBadge from "./NoteBadge";
 const DaysFromToday = (date: Date) => {
     const today = new Date();
     const formatedDistance = formatDistance(new Date(date), today, {
@@ -14,14 +14,14 @@ const DaysFromToday = (date: Date) => {
 };
 
 const Note_Card = ({ Note }: { Note: NOTE_TYPE }) => {
-
-    const NoteEmoji = GetCategoryEmoji(Note.category)
     const Note_Date = new Date(Note.createdAt)
+
 
     return (
         <Card className="w-full sm:min-w-80 max-w-[350px] min-h-[200px] py-3 px-2 aspect-video bg-yellow-100 rounded-md overflow-hidden relative flex-shrink-0 dark:bg-background ">
             <p className="text-xs font-light text-gray-400 ">
-                {NoteEmoji} <span className="italic">{DaysFromToday(new Date(Note_Date))}</span>
+                <NoteBadge note_Category={Note.category} />
+                <span className="italic ml-2">{DaysFromToday(new Date(Note_Date))}</span>
             </p>
 
             <p className="text-2xl font-bold ">

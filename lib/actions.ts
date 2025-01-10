@@ -114,7 +114,8 @@ export const deleteNote = async (id: string) => {
             success: false,
             message :   'Invalid Note'
         }
-    }
+        }
+        revalidatePath('/')
     return {
         success: true,
         message: 'Successfully Deleted'

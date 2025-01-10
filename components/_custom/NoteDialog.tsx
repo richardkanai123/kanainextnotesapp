@@ -10,11 +10,12 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { DaysFromToday, FormatDateIntoReadableString, GetCategoryEmoji } from "@/lib/utils"
-import { EditIcon, Trash2Icon } from "lucide-react";
+import { EditIcon } from "lucide-react";
 import { BsSendArrowUpFill } from "react-icons/bs";
 import { NOTE_TYPE } from "@/lib/Types";
 import { useRouter } from "next/navigation";
 import PinNoteBtn from "./Buttons/PinNoteBtn";
+import DeleleNoteBtn from "./Buttons/DeleleNoteBtn";
 
 export function NoteDialog({ Note }: {
     Note: NOTE_TYPE
@@ -44,8 +45,8 @@ export function NoteDialog({ Note }: {
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription className="w-full flex flex-col justify-between text-left gap-1">
-                        <span>Dated: {readableDate}</span>
-                        <span>{NoteCategoryEmoji}:{category} </span>
+                        <span className="text-sm">Dated: {readableDate}</span>
+                        <span className="flex align-middle items-center text-base">{NoteCategoryEmoji}:{category} </span>
                         <span className="text-xs">Created: {formattedDate}</span>
                     </DialogDescription>
                 </DialogHeader>
@@ -67,10 +68,7 @@ export function NoteDialog({ Note }: {
                         Share Note
                         <BsSendArrowUpFill className="w-4 h-4" />
                     </Button>
-                    <Button variant='destructive' className="max-w-[200px]">
-                        Delete Note
-                        <Trash2Icon className="w-4 h-4" />
-                    </Button>
+                    <DeleleNoteBtn NoteID={Note.id} />
                 </DialogFooter>
             </DialogContent>
         </Dialog >

@@ -57,7 +57,7 @@ const PinNoteBtn = ({ NoteID, pinned }: { NoteID: string, pinned: boolean }) => 
         <Button onClick={PinUnNoteAction} variant='secondary' className='max-w-[200px]' >
             <span className="ml-1">{pinned ? 'Unpin Note' : 'Pin Note'}</span>
             {
-                isPending ? <LoaderPinwheel className='w-6 h-6 animate-spin text-yellow-200' />
+                isPending ? <LoaderPinwheel className='w-6 h-6 animate-spin text-lime-600' />
                     :
 
                     pinned ?
