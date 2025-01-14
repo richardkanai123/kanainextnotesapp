@@ -27,6 +27,8 @@ model Notes {
 }
 
 model Users {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  externalid String
+  email      String
 }

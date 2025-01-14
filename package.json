@@ -1,12 +1,14 @@
 {
   "name": "kanainextnotesapp",
-  "version": "0.1.0",
+  "version": "0.1.9",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+
   },
   "dependencies": {
     "@clerk/elements": "^0.22.7",
