@@ -32,11 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      afterSignOutUrl='/sign-in'
-    >
+    <ClerkProvider>
       <html
         lang="en"
         suppressHydrationWarning
