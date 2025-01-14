@@ -309,3 +309,116 @@ export const UnPinNote = async (id: string) => {
     }
 }
 
+// sharing a note
+// ! update the note's sharedWith array with the user's id gotten from clerk but stored in the database
+
+export const ShareNote = async (noteId: string, recipientId: string, ) => { 
+    // get the note
+    const note = await prisma.notes.findUnique({
+        where: {
+            id: noteId
+        }
+    })
+
+    // check if the note exists
+    if (!note) {
+        return {
+            success: false,
+            message :   'Invalid Note'
+        }
+    }
+
+    // check if the recipient exists
+    const recipient = await prisma.users.findUnique({
+        where: {
+            id: recipientId
+        }
+    })
+
+    if (!recipient) {
+        return {
+            success: false,
+            message :   'Invalid Recipient'
+        }
+    }
+
+    const { userId } = await auth()
+
+    // check if current user is the note's writer
+    if (note.writer !== userId) {
+        return {
+            success: false,
+            message :   'You are not authorized to share this note'
+        }
+    }
+    
+    // check if the note is already shared
+    if (note.sharedWith.includes(recipientId)) {
+        return {
+            success: false,
+            message :   'Note is already shared'
+        }
+    }
+
+    // check if the recipient is the note's writer
+    if (note.writer === recipientId) {
+        return {
+            success: false,
+            message :   'You cannot share a note with yourself'
+        }
+    }
+
+    const updatedNote = await prisma.notes.update({
+        where: {
+            id: noteId
+        },
+        data: {
+            sharedWith: {
+                push: recipientId
+            }
+        }
+    })
+
+    if (!updatedNote) {
+        return {
+            success: false,
+            message :   'Failed to Share Note'
+        }
+    }
+
+    revalidatePath('/')
+    revalidatePath('/shared')
+    return {
+        success: true,
+        message: 'Successfully Shared Note'
+    }
+}
+
+
+// get notes shared with the user
+
+export const GetSharedNotes = async () => {
+    const { userId } = await auth()
+
+    const notes = await prisma.notes.findMany({
+        where: {
+            sharedWith: {
+                has: userId
+            }
+        }
+    })
+
+    if (!notes) {
+        return {
+            success: false,
+            message: 'No notes shared with you',
+            notes
+        }
+    }
+    return {
+        success: true,
+        message: 'Successfully fetched shared notes',
+        notes
+    }
+
+   }
