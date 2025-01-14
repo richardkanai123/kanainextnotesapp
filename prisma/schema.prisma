@@ -21,5 +21,10 @@ model Notes {
 }
 
 model Users {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  externalId    String
+  username      String
+  email_address String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt()
 }
