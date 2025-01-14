@@ -1,12 +1,24 @@
 'use server'
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { auth } from '@clerk/nextjs/server'
 
 export const getNotes = async () => { 
+const { userId } = await auth()
+
+    if(!userId) {
+        return {
+            success: false,
+            notes: []
+        }
+    }
     const notes = await prisma.notes.findMany(
         {
             orderBy:{
                 createdAt: 'desc'
+            },
+            where: {
+                writer: userId as string
             }
         }
     )
@@ -109,6 +121,8 @@ export const createNote = async (newData: {
 }
 
 export const deleteNote = async (id: string) => {
+const { userId } = await auth()
+
     try {
         const note = await prisma.notes.delete({
         where: {
@@ -121,11 +135,17 @@ export const deleteNote = async (id: string) => {
             message :   'Invalid Note'
         }
         }
+        if(note.writer !== userId) {
+            return {
+                success: false,
+                message :   'You are not authorized to delete this note'
+            }
+        }
         revalidatePath('/')
-    return {
-        success: true,
-        message: 'Successfully Deleted'
-    }
+        return {
+            success: true,
+            message: 'Successfully Deleted'
+        }
     
     } catch (error) {
         if(error instanceof Error) {
@@ -152,8 +172,31 @@ export const UpdateNote = async (id: string, newData: {
         isPinned
 
     } = newData
+    const { userId } = await auth()
 
-    const note = await prisma.notes.update({
+    const note = await prisma.notes.findUnique({
+        where: {
+            id: id
+        }
+    })
+
+    if (!note) {
+        return {
+            success: false,
+            message :   'Invalid Note'
+        }
+    }
+
+    if(note.writer !== userId) {
+        return {
+            success: false,
+            message :   'You are not authorized to update this note'
+        }
+    }
+
+
+    
+    const UpdatedNote = await prisma.notes.update({
         where: {
             id: id
         },
@@ -166,7 +209,7 @@ export const UpdateNote = async (id: string, newData: {
         }
     })
 
-    if (!note) {
+    if (!UpdatedNote) {
         return {
             success: false,
             message :   'Invalid Note'

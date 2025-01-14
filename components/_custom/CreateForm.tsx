@@ -26,6 +26,7 @@ import { createNote } from "@/lib/actions"
 import { toast } from 'react-toastify'
 import { noteCategories } from "@/lib/Constants/categories"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
+import { useAuth } from "@clerk/nextjs"
 const TipTap = dynamic(() => import("@/components/_custom/Tiptap"), { ssr: false })
 
 const categoryList = noteCategories.map((category) => category.name).sort(
@@ -61,6 +62,8 @@ const CreateNoteForm = () => {
             date: new Date()
         }
     })
+
+    const { userId } = useAuth()
 
     const removePTagsInListItems = (htmlString: string): string => {
         const parser = new DOMParser();
@@ -99,12 +102,15 @@ const CreateNoteForm = () => {
                     async (data) => {
                         const { title, content, date, category } = data
 
-                        const cleanContent = removePTagsInListItems(content)
-
+                        if (!userId) {
+                            toast.error('You must be logged in to create a note!')
+                            return
+                        }
+                        const cleanContentHTML = removePTagsInListItems(content)
                         const NewNoteData = {
                             title,
-                            content: cleanContent,
-                            writer: 'user_1',
+                            content: cleanContentHTML,
+                            writer: userId,
                             date,
                             category
                         }

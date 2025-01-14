@@ -6,6 +6,10 @@ import Header from "@/components/_custom/Header";
 // react toast
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// clerk
+import {
+  ClerkProvider,
+} from '@clerk/nextjs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,24 +32,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="w-full min-h-screen container mx-auto flex flex-col ">
-            <Header />
-            {children}
-          </div>
-          <ToastContainer limit={1} autoClose={3000} />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        suppressHydrationWarning
+
+      >
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+          >
+            <div className="w-full min-h-screen container mx-auto flex flex-col ">
+              <Header />
+              {children}
+            </div>
+            <ToastContainer limit={1} autoClose={3000} />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

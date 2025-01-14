@@ -1,14 +1,16 @@
 'use client'
 import Link from "next/link"
 import { FaHome } from "react-icons/fa"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { usePathname } from "next/navigation"
 import { ModeToggle } from "./ModeToggle"
 import Image from "next/image"
+import { UserButton } from "@clerk/nextjs"
 
 import { RiUserSharedFill } from "react-icons/ri";
 
 const Header = () => {
+
     const pathName = usePathname()
     const defaultLinkStyles = 'text-primary p-2 h-fit rounded-sm flex flex-col align-middle justify-center items-center hover:bg-primary hover:text-white transition-all ease-in delay-100 aspect-square'
 
@@ -31,10 +33,8 @@ const Header = () => {
                     <div className="">
                         <ModeToggle />
                     </div>
-                    <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+
+                    <UserButton />
                 </div>
             </div>
         </div>
