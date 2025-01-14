@@ -24,7 +24,7 @@ const SearchBar = () => {
     const formref = useRef<HTMLFormElement>(null)
 
     return (
-        <div>
+        <div className='sm:mb-4 md:mb-0'>
             <Form ref={formref} action="search" className='flex'>
                 <Input ref={inputRef} defaultValue={titleParams} onChange={handleSearch} placeholder="Search by title " className="w-full bg-opacity-85 bg-background" type="text" name="title" id="title" />
                 {

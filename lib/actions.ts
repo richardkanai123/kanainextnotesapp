@@ -3,7 +3,13 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
 export const getNotes = async () => { 
-    const notes = await prisma.notes.findMany()
+    const notes = await prisma.notes.findMany(
+        {
+            orderBy:{
+                createdAt: 'desc'
+            }
+        }
+    )
     if (notes.length > 0) {
         return {
             success: true,

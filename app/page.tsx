@@ -43,7 +43,7 @@ const Home = async (props: {
         </Suspense>
       </ErrorBoundary>
 
-      <div className="w-full p-2 flex items-center sm:justify-around md:justify-between md:gap-4 border-b ">
+      <div className="w-full flex items-center sm:justify-around md:justify-between md:gap-4 border-b mb-4 ">
         <h1 className="text-xl font-semibold  "> Notes</h1>
         <NavCatFilter />
       </div>
