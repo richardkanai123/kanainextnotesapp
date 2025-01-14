@@ -13,15 +13,15 @@ const UnPinnedNotesLister = ({
     Notes: NOTE_TYPE[];
     SearchParams: SearchParams;
 }) => {
-    const { title } = SearchParams;
+    const { title, category } = SearchParams;
     const FilteredNotesArray = useMemo(
-        () => filterNotes(title, Notes),
-        [title, Notes]
+        () => filterNotes(title, Notes, category),
+        [title, Notes, category]
     );
 
     if (!Notes) {
         return (
-            <div className="w-full flex flex-col items-center justify-center gap-4">
+            <div className="w-full flex flex-col items-center justify-center gap-4 py-2">
                 <p className="text-sm text-gray-500">No Notes</p>
                 <Link
                     href="/create"
@@ -34,7 +34,7 @@ const UnPinnedNotesLister = ({
 
     return (
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
-            {FilteredNotesArray.length === 0 ? (
+            {FilteredNotesArray?.length === 0 || !FilteredNotesArray ? (
                 <p className="text-primary">No Notes found with current filters</p>
             ) : (
                 FilteredNotesArray.map((note) => (

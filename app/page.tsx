@@ -1,6 +1,7 @@
 import EmptyNotes from "@/components/_custom/EmptyNotes";
 import ErrorComponent from "@/components/_custom/ErrorCompponent";
 import HeroNav from "@/components/_custom/HeroNav";
+import NavCatFilter from "@/components/_custom/NavCatFilter";
 import PinnedNotesComponent from "@/components/_custom/PinnedNotesComponent";
 import UnPinnedNotesLister from "@/components/_custom/UnPinnedNotesLister";
 import { getNotes } from "@/lib/actions";
@@ -42,7 +43,10 @@ const Home = async (props: {
         </Suspense>
       </ErrorBoundary>
 
-      <h1 className="text-xl font-semibold">Notes</h1>
+      <div className="w-full p-2 flex items-center sm:justify-around md:justify-between md:gap-4 border-b ">
+        <h1 className="text-xl font-semibold  "> Notes</h1>
+        <NavCatFilter />
+      </div>
       {/* grid of cards */}
       <ErrorBoundary errorComponent={ErrorComponent} >
         <Suspense fallback={<p className="text-sm text-gray-500">Loading notes...</p>}>
