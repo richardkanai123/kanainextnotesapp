@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
-import { WebhookEvent } from '@clerk/nextjs/server'
-
+import { UserJSON, WebhookEvent } from '@clerk/nextjs/server'
+import { prisma } from '@/lib/prisma'
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET
 
@@ -49,18 +49,37 @@ export async function POST(req: Request) {
   }
 
   // Do something with payload
-  const { id, } = evt.data
+    const {id,username,email_addresses  } = evt.data as UserJSON
   const eventType = evt.type
  
   
-    const userData = payload.data as {
-        id: string,
-        username: string,
-        emailAddresses: string[],
+    const userData = {
+        id,
+        username: username as string,
+        userEmail: email_addresses[0].email_address
     }
 
-    console.log(userData, id, eventType)
+    const newUser = await prisma.users.upsert({
+        where: {
+            externalId: userData.id
+        },
+        update: {
+            username: userData.username,
+            email_address: userData.userEmail  
+        },
+        create: {
+            externalId: userData.id,
+            username: userData.username,
+            email_address: userData.userEmail
+        }
+    })
 
-  return new Response('Webhook received', { status: 200 })
+    if (!newUser) { 
+        return new Response('Error: User not created', {
+            status: 400,
+          })
+    }
+
+  return new Response(`Webhook received: ${eventType} ` , { status: 200 })
 }
 

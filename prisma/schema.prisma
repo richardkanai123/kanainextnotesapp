@@ -22,7 +22,7 @@ model Notes {
 
 model Users {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  externalId    String
+  externalId    String   @unique
   username      String
   email_address String
   createdAt     DateTime @default(now())
