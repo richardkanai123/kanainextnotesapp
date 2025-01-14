@@ -25,7 +25,7 @@ const SharedNotesPage = async () => {
         )
     }
     return (
-        <div className='flex items-center align-middle justify-center flex-col min-h-[70vh]'>
+        <div className='flex items-center align-middle  flex-col min-h-[70vh]'>
             <h1>Shared Notes</h1>
             <ErrorBoundary errorComponent={ErrorComponent} >
                 <Suspense fallback={<p className="text-sm text-gray-500">Loading...</p>} >

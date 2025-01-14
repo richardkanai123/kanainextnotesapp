@@ -47,7 +47,9 @@ export const getNotebyId = async (id: string) => {
             date: true,
             category: true,
             isPinned: true,
-            createdAt: true
+            createdAt: true,
+            updatedAt: true,
+            sharedWith:true
         }
     })
     
@@ -422,3 +424,89 @@ export const GetSharedNotes = async () => {
     }
 
    }
+
+
+//    get users
+export const getUsers = async () => {
+    try {
+        const { userId } = await auth()
+    if(!userId) {
+        return {
+            success: false,
+            users: null,
+            message: 'You are authenticated! Log in to continue'
+        }
+    }
+
+    const users =await prisma.users.findMany({
+        orderBy: {
+            username: 'asc',
+        }
+    })
+
+    if (!users) {
+        return {
+            success: false,
+            message: 'No users found',
+            users: null
+        }
+    }
+
+    return {
+        success: true,
+        message: 'Successfully fetched users',
+        users
+    }
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                users: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            users: null
+        }
+        
+    }
+}
+
+// get username by id
+export const getUserNameById = async (id: string) => {
+    try {
+        const user = await prisma.users.findUnique({
+            where: {
+                externalId: id
+            }
+        })
+        if (!user) {
+            return {
+                success: false,
+                message: 'No user found',
+                username: null
+            }
+        }
+        return {
+            success: true,
+            message: 'Successfully fetched username',
+            username: user.username
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                username: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            username: null
+        }
+    }
+}

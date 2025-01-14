@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/dialog"
 import { DaysFromToday, FormatDateIntoReadableString, GetCategoryEmoji } from "@/lib/utils"
 import { EditIcon } from "lucide-react";
-import { BsSendArrowUpFill } from "react-icons/bs";
 import { NOTE_TYPE } from "@/lib/Types";
 import { useRouter } from "next/navigation";
 import PinNoteBtn from "./Buttons/PinNoteBtn";
+import { LuPanelBottomOpen } from "react-icons/lu";
+
 import DeleleNoteBtn from "./Buttons/DeleleNoteBtn";
 
 export function NoteDialog({ Note }: {
@@ -64,9 +65,9 @@ export function NoteDialog({ Note }: {
 
                     <PinNoteBtn NoteID={Note.id} pinned={Note.isPinned} />
 
-                    <Button variant='outline' className="max-w-[200px]">
-                        Share Note
-                        <BsSendArrowUpFill className="w-4 h-4" />
+                    <Button onClick={() => Router.push(`/note/${Note.id}`)} variant='outline' className="max-w-[200px]">
+                        Open Details
+                        <LuPanelBottomOpen className="w-4 h-4" />
                     </Button>
                     <DeleleNoteBtn NoteID={Note.id} />
                 </DialogFooter>

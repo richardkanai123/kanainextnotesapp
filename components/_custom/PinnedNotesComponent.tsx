@@ -3,6 +3,7 @@ import { NOTE_TYPE } from "@/lib/Types"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Note_Card from "./Note_Card"
 
+
 const PinnedNotesComponent = ({ notes }: { notes: NOTE_TYPE[] }) => {
     return (
         <ScrollArea

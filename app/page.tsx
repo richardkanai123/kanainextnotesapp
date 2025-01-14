@@ -14,6 +14,7 @@ const Home = async (props: {
 }) => {
   const searchParamsRes = await props.searchParams
   const notesResponse = await getNotes();
+
   if (!notesResponse.success) {
     return <EmptyNotes />;
   }
@@ -21,6 +22,7 @@ const Home = async (props: {
   const { notes } = notesResponse;
   const PinnedNotes = notes.filter((note) => note.isPinned);
   const UnpinneNotes = notes.filter((note) => !note.isPinned);
+
 
 
 

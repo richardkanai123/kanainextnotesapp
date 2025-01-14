@@ -1,14 +1,44 @@
+import { Prisma } from "@prisma/client";
 import { JsonValue } from "@prisma/client/runtime/library";
 
 export type NOTE_TYPE = {
-   id: string;
-    title: string;
-    content: string;
-    writer: string;
-    date: Date;
-    isPinned: boolean;
-    sharedWith?: JsonValue;
+	id: string;
+	title: string;
+	content: string;
+	writer: string;
+	date: Date;
+	isPinned: boolean;
+	sharedWith?: JsonValue;
+	createdAt: Date;
+	updatedAt: Date;
+	category: string;
+};
+
+export type USERLIST =
+	| {
+			success: boolean;
+			users: null;
+			message: string;
+	  }
+	| {
+			success: boolean;
+			message: string;
+			users: Prisma.PrismaPromise<{
+				id: string;
+				createdAt: Date;
+				updatedAt: Date;
+				externalId: string;
+				username: string;
+				email_address: string;
+			}>;
+	  };
+
+export type USERTYPE = 	 {
+    id: string;
     createdAt: Date;
     updatedAt: Date;
-    category: string;
+    externalId: string;
+    username: string;
+    email_address: string;
 }
+
