@@ -21,3 +21,43 @@ export async function GET() {
         });
     }
 }
+
+// create a new note
+
+export async function POST(req: Request) {
+    const body = await req.json();
+    
+    try {
+        const note = await prisma.notes.create({
+            data: {
+                title: body.title,
+                content: body.content,
+                writer: body.writer,
+                date: body.date,
+                category: body.category,
+                isPinned: false,
+                sharedWith: [],
+            
+            }
+        });
+
+        return NextResponse.json({
+            success: true,
+            note
+        });
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({
+                success: false,
+                message: error.message
+            });
+        }
+        return NextResponse.json({
+            success: false,
+            message: 'Error creating note'
+        });
+        
+    }
+    
+}

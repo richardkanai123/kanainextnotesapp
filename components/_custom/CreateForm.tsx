@@ -100,30 +100,39 @@ const CreateNoteForm = () => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(
                     async (data) => {
-                        const { title, content, date, category } = data
+                        try {
+                            const { title, content, date, category } = data
 
-                        if (!userId) {
-                            toast.error('You must be logged in to create a note!')
-                            return
+                            if (!userId) {
+                                toast.error('You must be logged in to create a note!')
+                                return
+                            }
+                            const cleanContentHTML = removePTagsInListItems(content)
+                            const NewNoteData = {
+                                title,
+                                content: cleanContentHTML,
+                                writer: userId,
+                                date,
+                                category
+                            }
+
+                            const newNoteRes = await createNote(NewNoteData)
+
+                            console.log(newNoteRes.note)
+                            if (newNoteRes.success) {
+                                toast.success('Note created successfully');
+                                Router.push('/create/success')
+                            } else {
+                                toast.error('Failed to create note!')
+                            }
+                        } catch (error) {
+                            if (error instanceof Error) {
+                                toast.error(error.message)
+                                console.log(error.cause, error.message)
+                            }
+                            toast.error('An error occurred! Please try again.')
+
                         }
-                        const cleanContentHTML = removePTagsInListItems(content)
-                        const NewNoteData = {
-                            title,
-                            content: cleanContentHTML,
-                            writer: userId,
-                            date,
-                            category
-                        }
-
-                        const newNoteRes = await createNote(NewNoteData)
-
-                        if (newNoteRes.success) {
-                            toast.success('Note created successfully');
-                            Router.push('/create/success')
-                        } else {
-                            toast.error('Failed to create note!')
-                        }
-
                     }
                 )} className="space-y-8 mx-auto max-w-screen-md bg-secondary p-4 rounded-lg ">
 

@@ -11,13 +11,12 @@ model Notes {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   category   String
   content    String
-  createdAt  DateTime @db.Date
-  date       DateTime @db.Date
+  createdAt  DateTime @default(now())
+  date       DateTime
   isPinned   Boolean
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  sharedWith Json?
+  sharedWith String[] @default([])
   title      String
-  updatedAt  DateTime @db.Date
+  updatedAt  DateTime @updatedAt()
   writer     String
 }
 

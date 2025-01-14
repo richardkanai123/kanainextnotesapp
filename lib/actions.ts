@@ -98,21 +98,17 @@ export const createNote = async (newData: {
     }=newData
     const note = await prisma.notes.create({
         data: {
+            category,
             title,
             content,
             writer,
             date,
-            category,
-            isPinned: false
+            isPinned: false,
+            sharedWith: [],
+            updatedAt: new Date()
         }
     })
 
-    if (!note) {
-        return {
-            success: true,
-            note
-        }
-    }
     return {
         success: true,
         note

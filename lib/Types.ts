@@ -1,3 +1,5 @@
+import { JsonValue } from "@prisma/client/runtime/library";
+
 export type NOTE_TYPE = {
    id: string;
     title: string;
@@ -5,7 +7,7 @@ export type NOTE_TYPE = {
     writer: string;
     date: Date;
     isPinned: boolean;
-    sharedWith: string[];
+    sharedWith?: JsonValue;
     createdAt: Date;
     updatedAt: Date;
     category: string;
