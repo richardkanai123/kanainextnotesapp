@@ -3,6 +3,7 @@ import { format, formatDistanceStrict } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { noteCategories } from "./Constants/categories";
 import { NOTE_TYPE } from "./Types";
+import { useAuth } from "@clerk/nextjs";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -27,8 +28,6 @@ export const FormatDateIntoReadableString = (date: Date) => {
 	return formattedDate;
 };
 
-
-
 // // filter notes array depending on title and category
 // export const filterNotes = (titleparam: string | string[] | undefined, Notes: NOTE_TYPE[], categoryParam:string | string[] | undefined) => {
 // 	const titleTag = titleparam as string | undefined
@@ -45,21 +44,65 @@ export const FormatDateIntoReadableString = (date: Date) => {
 // };
 
 export const filterNotes = (
-  titleParam: string | string[] | undefined,
-  notes: NOTE_TYPE[],
-  categoryParam: string | string[] | undefined
+	titleParam: string | string[] | undefined,
+	notes: NOTE_TYPE[],
+	categoryParam: string | string[] | undefined
 ): NOTE_TYPE[] => {
-  const titleTag = typeof titleParam === "string" ? titleParam : undefined;
-  const categoryTag = typeof categoryParam === "string" ? categoryParam : undefined;
+	const titleTag = typeof titleParam === "string" ? titleParam : undefined;
+	const categoryTag =
+		typeof categoryParam === "string" ? categoryParam : undefined;
 
-  return notes.filter((note) => {
-    const matchesTitle = titleTag
-      ? note.title.toLowerCase().includes(titleTag.toLowerCase())
-      : true;
+	return notes.filter((note) => {
+		const matchesTitle = titleTag
+			? note.title.toLowerCase().includes(titleTag.toLowerCase())
+			: true;
 
-    const matchesCategory =
-      categoryTag && categoryTag !== "all" ? note.category === categoryTag : true;
+		const matchesCategory =
+			categoryTag && categoryTag !== "all"
+				? note.category === categoryTag
+				: true;
 
-    return matchesTitle && matchesCategory;
-  });
+		return matchesTitle && matchesCategory;
+	});
+};
+
+export const GrantPermissions = (
+	writer: string,
+	recipients: string[] | null
+) => {
+	const { userId } = useAuth();
+	const Owner = {
+		canEdit: true,
+		canDelete: true,
+		canComment: true,
+		canPin: true,
+		canShare: true,
+	};
+
+	const Viewer = {
+		canEdit: false,
+		canDelete: false,
+		canComment: true,
+		canPin: false,
+		canShare: false,
+	};
+	if (!userId) {
+		return null;
+	}
+
+	if (writer === userId) {
+		return Owner;
+	}
+
+	if (recipients?.includes(userId)) {
+		return Viewer;
+	} else {
+		return {
+			canEdit: false,
+			canDelete: false,
+			canComment: false,
+			canPin: false,
+			canShare: false,
+		};
+	}
 };

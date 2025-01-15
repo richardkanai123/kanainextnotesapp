@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { auth } from '@clerk/nextjs/server'
 
+
 export const getNotes = async () => { 
 const { userId } = await auth()
 
@@ -314,85 +315,74 @@ export const UnPinNote = async (id: string) => {
 // sharing a note
 // ! update the note's sharedWith array with the user's id gotten from clerk but stored in the database
 
-export const ShareNote = async (noteId: string, recipientId: string, ) => { 
-    // get the note
-    const note = await prisma.notes.findUnique({
-        where: {
-            id: noteId
-        }
-    })
-
-    // check if the note exists
-    if (!note) {
+export const ShareNoteAction = async (noteId: string, recipientId: string) => { 
+    if (!noteId || !recipientId) {
         return {
             success: false,
-            message :   'Invalid Note'
-        }
-    }
-
-    // check if the recipient exists
-    const recipient = await prisma.users.findUnique({
-        where: {
-            id: recipientId
-        }
-    })
-
-    if (!recipient) {
-        return {
-            success: false,
-            message :   'Invalid Recipient'
+            message: 'Invalid note or recipient'
         }
     }
 
     const { userId } = await auth()
-
-    // check if current user is the note's writer
-    if (note.writer !== userId) {
-        return {
-            success: false,
-            message :   'You are not authorized to share this note'
-        }
-    }
     
-    // check if the note is already shared
-    if (note.sharedWith.includes(recipientId)) {
-        return {
-            success: false,
-            message :   'Note is already shared'
-        }
-    }
+    try {
+        const [note, recipient] = await Promise.all([
+            prisma.notes.findUnique({
+                where: { id: noteId }
+            }),
+            prisma.users.findUnique({
+                where: { id: recipientId }
+            })
+        ])
 
-    // check if the recipient is the note's writer
-    if (note.writer === recipientId) {
-        return {
-            success: false,
-            message :   'You cannot share a note with yourself'
-        }
-    }
-
-    const updatedNote = await prisma.notes.update({
-        where: {
-            id: noteId
-        },
-        data: {
-            sharedWith: {
-                push: recipientId
+        if (!note || !recipient) {
+            return {
+                success: false,
+                message: !note ? 'Invalid Note' : 'Invalid Recipient'
             }
         }
-    })
 
-    if (!updatedNote) {
+        if (note.writer !== userId) {
+            return {
+                success: false,
+                message: 'You are not authorized to share this note'
+            }
+        }
+
+        if (note.sharedWith.includes(recipientId) || note.writer === recipientId) {
+            return {
+                success: false,
+                message: note.sharedWith.includes(recipientId) ? 
+                    'Note is already shared' : 
+                    'You cannot share a note with yourself'
+            }
+        }
+
+        const updatedNote = await prisma.notes.update({
+            where: { id: noteId },
+            data: {
+                sharedWith: {
+                    push: recipientId
+                }
+            }
+        })
+
+        if (!updatedNote) {
+            throw new Error('Failed to Share Note')
+        }
+
+        revalidatePath('/')
+        revalidatePath('/shared')
+        return {
+            success: true,
+            message: 'Successfully Shared Note'
+        }
+
+    } catch (error) {
         return {
             success: false,
-            message :   'Failed to Share Note'
+            message: error instanceof Error ? error.message : 'Failed to Share Note'
         }
-    }
-
-    revalidatePath('/')
-    revalidatePath('/shared')
-    return {
-        success: true,
-        message: 'Successfully Shared Note'
     }
 }
 
@@ -510,3 +500,5 @@ export const getUserNameById = async (id: string) => {
         }
     }
 }
+
+

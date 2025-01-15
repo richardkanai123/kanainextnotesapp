@@ -7,6 +7,7 @@ const NotePage = async ({ params }: { params: { id: string } }) => {
     const { success, note } = await getNotebyId(id)
     const { success: usersResOk, users } = await getUsers()
 
+    // const UserPermissions =  
 
 
     if (!success || !note || !usersResOk || !users) {
