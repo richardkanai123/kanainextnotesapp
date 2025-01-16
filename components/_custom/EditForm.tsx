@@ -121,7 +121,7 @@ const EditNoteForm = ({ note }: { note: NOTE_TYPE }) => {
 
                         if (UpdatedNoteRes.success) {
                             toast.success('Successfully updated note!');
-                            Router.push('/')
+                            Router.push(`/note/${note.id}`)
                         } else {
                             toast.error(UpdatedNoteRes.message)
 
