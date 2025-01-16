@@ -502,3 +502,38 @@ export const getUserNameById = async (id: string) => {
 }
 
 
+// get note author username by id
+export const getNoteAuthorNameById = async (id: string) => {
+    try {
+        const user = await prisma.users.findUnique({
+            where: {
+                externalId: id
+            }
+        })
+        if (!user) {
+            return {
+                success: false,
+                message: 'No user found',
+                username: null
+            }
+        }
+        return {
+            success: true,
+            message: 'Successfully fetched username',
+            username: user.username
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                username: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            username: null
+        }
+    }
+}   

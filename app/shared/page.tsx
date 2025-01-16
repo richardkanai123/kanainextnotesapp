@@ -1,5 +1,5 @@
 import ErrorComponent from '@/components/_custom/ErrorCompponent'
-import SharedNotesComponent from '@/components/_custom/SharedNotesComponent'
+import SharedNotesLister from '@/components/_custom/SharedNotesLister'
 import SharedNotesSkeleton from '@/components/_custom/skeletons/SharedNotesSkeleton'
 import { GetSharedNotes } from '@/lib/actions'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
@@ -30,7 +30,7 @@ const SharedNotesPage = async () => {
             <h1>Shared Notes</h1>
             <ErrorBoundary errorComponent={ErrorComponent} >
                 <Suspense fallback={<SharedNotesSkeleton />} >
-                    <SharedNotesComponent notes={notes} />
+                    <SharedNotesLister notes={notes} />
                 </Suspense>
             </ErrorBoundary>
         </div>
