@@ -27,8 +27,12 @@ const ErrorComponent = () => {
     }, [router]);
     return (
 
-        <div>
-            <p>Something went wrong! Please try again.</p>
+        <div className='w-full flex flex-col' >
+            <h1 className="text-2xl font-semibold mb-2 ">Note Not Found</h1>
+            <p className="text-sm text-red-200">
+                Something went wrong!
+            </p>
+            <p>Refresh the page or try again later </p>
         </div>
     )
 }

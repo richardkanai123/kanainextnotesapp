@@ -10,6 +10,7 @@ const SharedNotesComponent = ({ notes }: { notes: NOTE_TYPE[] }) => {
                     <Link href={`/note/${note.id}`} className='w-full p-2 hover:bg-accent' key={note.id}>{note.title}</Link>
                 ))
             }
+
         </div>
     )
 }

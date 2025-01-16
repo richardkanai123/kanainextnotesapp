@@ -19,8 +19,8 @@ const NoteHeader = ({ authorName, date, category, NoteCategoryEmoji, createdAt, 
     sharedWith: JsonValue | undefined,
     Permissions: PERMISSIONSTYPE | null
 }) => (
-    <div className="bg-opacity-70 bg-slate-300 dark:bg-background py-3 px-2 rounded-md w-full mx-auto flex align-middle items-center justify-around">
-        <div className="flex-1 flex flex-col text-sm text-gray-500 text-left">
+    <div className="bg-opacity-70 bg-slate-300 dark:bg-background py-3 px-2 rounded-md w-full mx-auto flex align-middle justify-between dark:border-b">
+        <div className=" flex flex-col text-sm text-gray-600 dark:text-gray-200 text-left">
             <p>By: {authorName}</p>
             <p>Dated: {new Date(date).toLocaleDateString()}</p>
             <p>{NoteCategoryEmoji}:{category}</p>

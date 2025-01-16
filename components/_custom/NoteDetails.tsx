@@ -39,6 +39,8 @@ const NoteDetails = (props: { note: NOTE_TYPE, users: USERSTYPE }) => {
                 <NoteActions id={id} isPinned={isPinned} Permissions={Permissions} PossibleRecipients={PossibleRecipients} />
             </Suspense>
         </div>
+
+
     )
 }
 

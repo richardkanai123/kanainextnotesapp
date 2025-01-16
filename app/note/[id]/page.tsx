@@ -1,6 +1,8 @@
+import ErrorComponent from '@/components/_custom/ErrorCompponent'
 import NoteDetails from '@/components/_custom/NoteDetails'
 import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
 import { getNotebyId, getUsers } from '@/lib/actions'
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import { Params } from 'next/dist/server/request/params'
 import React, { Suspense } from 'react'
 
@@ -25,13 +27,12 @@ const NotePage = async ({ params }: { params: Params }) => {
             </div>
         )
     }
-
-
-
     return (
-        <Suspense fallback={<DetailsSkeleton />} >
-            <NoteDetails users={users} note={note} />
-        </Suspense>
+        <ErrorBoundary errorComponent={ErrorComponent} >
+            <Suspense fallback={<DetailsSkeleton />} >
+                <NoteDetails users={users} note={note} />
+            </Suspense>
+        </ErrorBoundary>
     )
 }
 
