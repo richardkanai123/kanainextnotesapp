@@ -1,11 +1,12 @@
 import NoteDetails from '@/components/_custom/NoteDetails'
 import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
 import { getNotebyId, getUsers } from '@/lib/actions'
+import { Params } from 'next/dist/server/request/params'
 import React, { Suspense } from 'react'
 
-const NotePage = async ({ params }: { params: { id: string } }) => {
+const NotePage = async ({ params }: { params: Params }) => {
     const { id } = await params
-    const { success, note } = await getNotebyId(id)
+    const { success, note } = await getNotebyId(id as string)
     const { success: usersResOk, users } = await getUsers()
 
     // const UserPermissions =  
