@@ -1,4 +1,5 @@
 import NoteDetails from '@/components/_custom/NoteDetails'
+import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
 import { getNotebyId, getUsers } from '@/lib/actions'
 import React, { Suspense } from 'react'
 
@@ -27,7 +28,7 @@ const NotePage = async ({ params }: { params: { id: string } }) => {
 
 
     return (
-        <Suspense fallback={<p className="text-sm text-gray-500">Loading...</p>} >
+        <Suspense fallback={<DetailsSkeleton />} >
             <NoteDetails users={users} note={note} />
         </Suspense>
     )

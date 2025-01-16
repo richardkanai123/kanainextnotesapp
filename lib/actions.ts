@@ -316,22 +316,23 @@ export const UnPinNote = async (id: string) => {
 // ! update the note's sharedWith array with the user's id gotten from clerk but stored in the database
 
 export const ShareNoteAction = async (noteId: string, recipientId: string) => { 
+    console.log(noteId, recipientId)
     if (!noteId || !recipientId) {
         return {
             success: false,
             message: 'Invalid note or recipient'
         }
     }
-
-    const { userId } = await auth()
     
     try {
+        const { userId } = await auth()
+        
         const [note, recipient] = await Promise.all([
             prisma.notes.findUnique({
                 where: { id: noteId }
             }),
             prisma.users.findUnique({
-                where: { id: recipientId }
+                where: { externalId: recipientId }
             })
         ])
 
@@ -349,12 +350,10 @@ export const ShareNoteAction = async (noteId: string, recipientId: string) => {
             }
         }
 
-        if (note.sharedWith.includes(recipientId) || note.writer === recipientId) {
+        if (note.sharedWith.includes(recipientId)) {
             return {
                 success: false,
-                message: note.sharedWith.includes(recipientId) ? 
-                    'Note is already shared' : 
-                    'You cannot share a note with yourself'
+                message: 'Note is already shared'
             }
         }
 
@@ -373,6 +372,7 @@ export const ShareNoteAction = async (noteId: string, recipientId: string) => {
 
         revalidatePath('/')
         revalidatePath('/shared')
+        revalidatePath(`/note/${noteId}`)
         return {
             success: true,
             message: 'Successfully Shared Note'
@@ -381,7 +381,7 @@ export const ShareNoteAction = async (noteId: string, recipientId: string) => {
     } catch (error) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : 'Failed to Share Note'
+            message: error instanceof Error ? error.message : 'An error occurred! Please try again.'
         }
     }
 }

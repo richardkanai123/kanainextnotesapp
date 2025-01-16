@@ -42,3 +42,16 @@ export type USERTYPE = 	 {
     email_address: string;
 }
 
+export type PERMISSIONSTYPE = {
+	canEdit: boolean;
+	canDelete: boolean;
+	canComment: boolean;
+	canPin: boolean;
+	canShare: boolean;
+}
+
+export type USERSTYPE = {
+    id: string;
+    externalId: string;
+    username: string;
+}[] | null
