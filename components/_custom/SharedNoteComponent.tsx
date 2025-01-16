@@ -1,16 +1,15 @@
 
 import { getNoteAuthorNameById } from "@/lib/actions"
 import { NOTE_TYPE } from "@/lib/Types"
-import { GetCategoryEmoji } from "@/lib/utils"
+// import { GetCategoryEmoji } from "@/lib/utils"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "../ui/badge"
 
 const SharedNoteComponent = async ({ note }: { note: NOTE_TYPE }) => {
-    const { category, id, writer, title, createdAt } = note
+    const { id, writer, title, createdAt } = note
     const authorNameRes = await getNoteAuthorNameById(writer)
 
-    const categoryEmoji = GetCategoryEmoji(category)
+    // const categoryEmoji = GetCategoryEmoji(category)
     const CreatedAt = new Date(createdAt).toLocaleDateString()
 
     return (
@@ -27,7 +26,7 @@ const SharedNoteComponent = async ({ note }: { note: NOTE_TYPE }) => {
                     </div>
                 </div>
                 <p className="flex align-middle items-center text-lg">{title} </p>
-                <Badge variant='default' className="text-lg rounded-full">{categoryEmoji}</Badge>
+
             </div>
         </Link>
     )
