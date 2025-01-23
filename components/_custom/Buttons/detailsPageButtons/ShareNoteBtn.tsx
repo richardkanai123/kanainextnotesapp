@@ -1,44 +1,24 @@
 'use client'
-
-import { Button } from '@/components/ui/button';
 import { LoaderPinwheelIcon, SendHorizonalIcon, SendHorizontalIcon } from 'lucide-react';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Card } from '@/components/ui/card';
-import { Check, ChevronsUpDown } from "lucide-react"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from '@/lib/utils';
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
+
 import { toast } from 'react-toastify';
 import { ShareNoteAction } from '@/lib/actions';
 import { useState } from 'react';
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ShareNoteBtnProps {
     users: {
@@ -50,10 +30,13 @@ interface ShareNoteBtnProps {
 }
 
 
+// const FormSchema = z.object({
+//     targetReceipient: z.array(z.string()).nonempty('Please select a user to share with').min(1, 'Please select a user to share with')
+// })
+
 const FormSchema = z.object({
     targetReceipient: z.string()
 })
-
 
 const ShareNoteBtn = ({ users, noteid }: ShareNoteBtnProps) => {
 
@@ -67,7 +50,6 @@ const ShareNoteBtn = ({ users, noteid }: ShareNoteBtnProps) => {
         return null
     }
     const ShareNote = async (data: z.infer<typeof FormSchema>) => {
-        console.log(data)
         try {
             const shareRes = await ShareNoteAction(noteid, data.targetReceipient)
             if (!shareRes.success) {
@@ -91,102 +73,59 @@ const ShareNoteBtn = ({ users, noteid }: ShareNoteBtnProps) => {
         }
     }
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button variant={'outline'} size={'icon'}>
-                    <SendHorizonalIcon className="w-4 h-4" />
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-[500px] px-2 ">
-                <DialogHeader>
-                    <DialogTitle>Share Note</DialogTitle>
-                    <DialogDescription>
+        <Drawer direction='bottom' open={open} onOpenChange={setOpen}>
+            <DrawerTrigger className='p-1 border bg-primary text-white cursor-pointer' asChild>
+                <SendHorizonalIcon className="w-6 h-6 text-xl rounded " />
+            </DrawerTrigger>
+            <DrawerContent className="mx-auto max-w-screen-sm px-2 pb-4 ">
+                <DrawerHeader>
+                    <DrawerTitle>Share Note</DrawerTitle>
+                    <DrawerDescription>
                         Select a user to share the note with
-                    </DialogDescription>
-                </DialogHeader>
-                <Card className="w-full max-w-[400px] min-h-fit py-2 bg-card rounded-md overflow-hidden relative animate-in transition-all ease-in border-0">
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(ShareNote)} className=" w-full flex justify-between align-middle gap-2 ">
-                            <FormField
-                                control={form.control}
-                                name="targetReceipient"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-col">
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                        variant="outline"
-                                                        role="combobox"
-                                                        className={cn(
-                                                            "w-[200px] justify-between",
-                                                            !field.value && "text-muted-foreground"
-                                                        )}
-                                                    >
-                                                        {field.value
-                                                            ? users.find(
-                                                                (user) => user.externalId === field.value
-                                                            )?.username
-                                                            : "Select a user..."}
-                                                        <ChevronsUpDown className="opacity-50" />
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-[200px] p-0">
-                                                <Command>
-                                                    <CommandInput
-                                                        placeholder="Search user..."
-                                                        className="h-9"
-                                                    />
-                                                    <CommandList>
-                                                        <CommandEmpty>
-                                                            No user found
-                                                        </CommandEmpty>
-                                                        <CommandGroup>
-                                                            {users.map((user) => (
-                                                                <CommandItem
-                                                                    value={user.externalId}
-                                                                    key={user.id}
-                                                                    onSelect={() => {
-                                                                        form.setValue("targetReceipient", user.externalId)
-                                                                    }}
-                                                                >
-                                                                    {user.username}
-                                                                    <Check
-                                                                        className={cn(
-                                                                            "ml-auto",
-                                                                            user.externalId === field.value
-                                                                                ? "opacity-100"
-                                                                                : "opacity-0"
-                                                                        )}
-                                                                    />
-                                                                </CommandItem>
-                                                            ))}
-                                                        </CommandGroup>
-                                                    </CommandList>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button type="submit" disabled={form.formState.isSubmitting || form.formState.isDirty || users.length === 0}>
-                                {
-                                    form.formState.isSubmitting ?
-                                        "Sharing..." : "Share"
-                                }
-                                {
-                                    form.formState.isSubmitting ?
-                                        <LoaderPinwheelIcon className="w-4 h-4 animate-spin text-lime-300" />
-                                        : <SendHorizontalIcon className="w-4 h-4 ml-2" />
-                                }
-                            </Button>
-                        </form>
-                    </Form>
-                </Card>
-            </DialogContent>
-        </Dialog>
+                    </DrawerDescription>
+                </DrawerHeader>
+
+                <form onSubmit={form.handleSubmit(ShareNote)}>
+                    <div className="grid gap-4 py-4 mx-auto w-full max-w-2xl">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <label htmlFor="targetReceipient" className="text-right font-medium">
+                                Select User
+                            </label>
+                            <div className="col-span-3">
+                                <select
+                                    {...form.register('targetReceipient')}
+                                    id="targetReceipient"
+                                    name="targetReceipient"
+                                    className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                >
+                                    <option value="">Select a user</option>
+                                    {users.map((user) => (
+                                        <option key={user.externalId} value={user.externalId}>
+                                            {user.username}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <Button disabled={form.formState.isSubmitting || !form.formState.isValid} type='submit' className='text-white w-full max-w-sm mx-auto' variant='default' size='lg'>
+                            Share {
+                                form.formState.isSubmitting ? <LoaderPinwheelIcon className='w-4 h-4 animate-spin' /> : <SendHorizonalIcon className="w-4 h-4" />
+                            }
+                        </Button>
+
+                    </div>
+                </form>
+
+                <DrawerFooter>
+                    {/* <Button variant='default'>
+                        Share
+                    </Button> */}
+                    <DrawerClose className={cn('bg-red-500', 'text-white rounded-lg text-lg p-2 w-full max-w-sm mx-auto')} onClick={() => setOpen(false)}>
+                        Cancel
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
     )
 }
 
