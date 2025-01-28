@@ -2,9 +2,9 @@
 import { NOTE_TYPE } from "@/lib/Types";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import Note_Card from "./Note_Card";
 import { SearchParams } from "next/dist/server/request/search-params";
 import { filterNotes } from "@/lib/utils";
+import { NoteDialog } from "./NoteDialog";
 
 const UnPinnedNotesLister = ({
     Notes,
@@ -35,13 +35,10 @@ const UnPinnedNotesLister = ({
     return (
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
             {FilteredNotesArray?.length === 0 || !FilteredNotesArray ? (
-                <p className="text-primary">No Notes found with current filters</p>
+                <p className="text-primary">No Notes found.</p>
             ) : (
                 FilteredNotesArray.map((note) => (
-                    <Note_Card
-                        Note={note}
-                        key={note.id}
-                    />
+                    <NoteDialog Note={note} key={note.id} />
                 ))
             )}
         </div>

@@ -17,6 +17,7 @@ import PinNoteBtn from "./Buttons/PinNoteBtn";
 import { LuPanelBottomOpen } from "react-icons/lu";
 
 import DeleleNoteBtn from "./Buttons/DeleleNoteBtn";
+import NoteBadge from "./NoteBadge";
 
 export function NoteDialog({ Note }: {
     Note: NOTE_TYPE
@@ -40,7 +41,19 @@ export function NoteDialog({ Note }: {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">View</Button>
+                <div className="w-full sm:min-w-80 max-w-[350px] min-h-[200px] py-3 px-2 aspect-video bg-yellow-200 rounded-md overflow-hidden relative flex-shrink-0 dark:bg-background animate-in transition-all ease-in border cursor-pointer hover:shadow-lg dark:hover:bg-slate-800 dark:hover:animate-pulse  ">
+                    <p className="text-2xl font-bold ">{title}</p>
+                    <div className="text-xs font-light text-gray-400 ">
+                        <NoteBadge note_Category={Note.category} />
+                        <span className="italic ml-2">
+                            {DaysFromToday(new Date(date))}
+                        </span>
+                    </div>
+                    <section
+                        className="text-base p-4  text-wrap overflow-ellipsis"
+                        dangerouslySetInnerHTML={{ __html: content }}>
+                    </section>
+                </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-screen-sm bg-yellow-300 dark:bg-background">
                 <DialogHeader>
@@ -51,7 +64,7 @@ export function NoteDialog({ Note }: {
                         <span className="text-xs">Created: {formattedDate}</span>
                     </DialogDescription>
                 </DialogHeader>
-                <div className="p-2 noteDialog" dangerouslySetInnerHTML={{ __html: content }} >
+                <div className="p-2 noteDialog text-wrap" dangerouslySetInnerHTML={{ __html: content }} >
                 </div>
 
                 <DialogFooter className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 items-center content-center justify-center align-middle  ">

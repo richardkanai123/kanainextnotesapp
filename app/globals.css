@@ -71,3 +71,62 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.cardHtml{
+  width: 100%;
+  padding: 10px;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+
+  p{
+    width: 100%;
+    overflow-x: hidden;
+    text-wrap: wrap;
+  }
+
+  ul{
+    padding: 5px;
+    list-style: disc;
+    list-style-position: inside;
+
+    li{
+      border-bottom: 1px dotted;
+      overflow-x: hidden;
+      text-wrap: stable;
+    }
+  
+  strong{
+    font-weight: bold;
+  }
+}
+
+  h1{
+    font-weight: bolder;
+    font-size: 1.5rem;
+  }
+
+  
+  h2{
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  h3{
+    font-weight: bold;
+    font-size: 1.0rem;
+  }
+
+  italic{
+    font-style: italic;
+  }
+
+
+}
+
+.noteDialog{
+  width: 100%;
+    li{
+      border-bottom: 1px dotted;
+    }
+}

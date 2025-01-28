@@ -1,7 +1,8 @@
 'use client'
 import { NOTE_TYPE } from "@/lib/Types"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import Note_Card from "./Note_Card"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { NoteDialog } from "@/components/_custom/NoteDialog"
+
 
 
 const PinnedNotesComponent = ({ notes }: { notes: NOTE_TYPE[] }) => {
@@ -11,10 +12,7 @@ const PinnedNotesComponent = ({ notes }: { notes: NOTE_TYPE[] }) => {
             className="w-full whitespace-nowrap rounded-md border-b mb-4 pb-4">
             <div className="flex w-max space-x-2">
                 {notes.map((note) => (
-                    <Note_Card
-                        key={note.id}
-                        Note={note}
-                    />
+                    <NoteDialog Note={note} key={note.id} />
                 ))}
             </div>
             <ScrollBar orientation="horizontal" />
