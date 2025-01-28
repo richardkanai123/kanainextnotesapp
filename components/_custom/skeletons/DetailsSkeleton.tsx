@@ -18,6 +18,8 @@ export function DetailsSkeleton() {
             <div className="space-y-2">
                 <ButtonsSkeleton />
             </div>
+
+            <h1>Comments</h1>
         </div>
     )
 }

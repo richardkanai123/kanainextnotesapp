@@ -1,10 +1,15 @@
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
+import { Params } from 'next/dist/server/request/params'
+import React, { Suspense } from 'react'
+import CommentSection from '@/components/_custom/CommentSection'
+import CommentSectionError from '@/components/_custom/CommentSectionError'
 import ErrorComponent from '@/components/_custom/ErrorCompponent'
 import NoteDetails from '@/components/_custom/NoteDetails'
 import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
 import { getNotebyId, getUsers } from '@/lib/actions'
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
-import { Params } from 'next/dist/server/request/params'
-import React, { Suspense } from 'react'
+import CommentsSkeleton from '@/components/_custom/skeletons/CommentsSkeleton'
+import CreateComment from '@/components/_custom/CreateComment'
+
 
 const NotePage = async ({ params }: { params: Params }) => {
     const { id } = await params
@@ -28,11 +33,22 @@ const NotePage = async ({ params }: { params: Params }) => {
         )
     }
     return (
-        <ErrorBoundary errorComponent={ErrorComponent} >
-            <Suspense fallback={<DetailsSkeleton />} >
-                <NoteDetails users={users} note={note} />
-            </Suspense>
-        </ErrorBoundary>
+        <>
+            <ErrorBoundary errorComponent={ErrorComponent} >
+                <Suspense fallback={<DetailsSkeleton />} >
+                    <NoteDetails users={users} note={note} />
+                </Suspense>
+            </ErrorBoundary>
+
+            <ErrorBoundary errorComponent={CommentSectionError}>
+
+                <Suspense fallback={<CommentsSkeleton />} >
+                    <CommentSection note_id={note.id} />
+                    <CreateComment note={note.id} />
+                </Suspense>
+            </ErrorBoundary>
+        </>
+
     )
 }
 

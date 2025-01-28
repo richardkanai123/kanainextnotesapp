@@ -55,3 +55,12 @@ export type USERSTYPE = {
     externalId: string;
     username: string;
 }[] | null
+
+export type COMMENT = {
+	id: string;
+	content: string;
+	writer: string;
+	noteId: string;
+	createdAt: Date;
+	updatedAt?: Date;
+}

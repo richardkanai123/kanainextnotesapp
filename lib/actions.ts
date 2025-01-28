@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { auth } from '@clerk/nextjs/server'
 
 
+
 export const getNotes = async () => { 
 const { userId } = await auth()
 
@@ -537,3 +538,158 @@ export const getNoteAuthorNameById = async (id: string) => {
         }
     }
 }   
+
+// create a new comment for a note
+export const CreateNewComment = async (noteId: string, content: string, writer: string) => { 
+    try {
+        //validate the note
+        const note = await prisma.notes.findUnique({
+            where: {
+                id: noteId
+            }
+        })
+        if (!note) {
+            return {
+                success: false,
+                message: 'Invalid Note'
+            }
+        }
+
+        //    check if the writer is the note author or a recipient, if not, return an error and stop the process
+        if (note.writer !== writer && !note.sharedWith.includes(writer)) {
+            return {
+                success: false,
+                message: 'You are not authorized to comment on this note'
+            }
+        }
+        
+        // create the comment
+        const comment = await prisma.comments.create({
+            data: {
+                content,
+                writer,
+                noteId
+            }
+        })
+
+        if (!comment) {
+            return {
+                success: false,
+                message: 'Failed to create comment'
+            }
+        }
+
+        revalidatePath(`/note/${noteId}`)
+        return {
+            success: true,
+            message: 'Added Comment Successfully'
+        }
+    } catch (error) {
+         if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+        }
+    }
+}
+
+// Get comments for a note
+export const GetComments = async (noteId: string) => {
+    try {
+        const comments = await prisma.comments.findMany({
+            where: {
+                noteId: noteId
+            }
+        })
+
+        if (!comments) { 
+            return {
+                success: true,
+                message: 'No comments found',
+                comments: null
+            }
+        }
+        return {
+            success: true,
+            message: 'Successfully fetched comments',
+            comments
+        }
+    } catch (error) {
+         if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                comments: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            comments: null
+        }
+    }
+}
+
+
+// delete a comment
+export const DeleteComment = async (commentId: string, writer: string) => {
+    try {
+        const comment = await prisma.comments.findUnique({
+            where: {
+                id: commentId,
+            }
+        })
+
+        if (!comment) {
+            return {
+                success: false,
+                message: 'Invalid Comment'
+            }
+        }
+
+        if (comment.writer !== writer) {
+            return {
+                success: false,
+                message: 'You are not authorized to delete this comment'
+            }
+        }
+
+        const deletedComment = await prisma.comments.delete({
+            where: {
+                id: commentId
+            }
+        })
+
+        if (!deletedComment) {
+            return {
+                success: false,
+                message: 'Failed to delete comment'
+            }
+        }
+
+        revalidatePath(`/note/${comment.noteId}`)
+        return {
+            success: true,
+            message: 'Deleted Comment Successfully'
+        }
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                comments: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            comments: null
+        }
+    }
+}
