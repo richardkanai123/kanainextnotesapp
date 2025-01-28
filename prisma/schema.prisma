@@ -18,6 +18,8 @@ model Notes {
   title      String
   updatedAt  DateTime @updatedAt()
   writer     String
+
+  @@index([writer])
 }
 
 model Users {
@@ -27,4 +29,17 @@ model Users {
   email_address String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt()
+
+  @@index([username, email_address, externalId])
+}
+
+model Comments {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  noteId    String
+  updatedAt DateTime @updatedAt()
+  writer    String
+
+  @@index([writer, noteId])
 }
