@@ -11,8 +11,8 @@ export function ModeToggle() {
 
     return (
         <Button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} variant="outline" size="icon" className="relative flex items-center justify-center">
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         </Button>
 
 
