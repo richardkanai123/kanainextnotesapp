@@ -20,8 +20,8 @@ const DeleteCommentBtn = ({ comment_id, userid }: { comment_id: string, userid: 
     }
 
     return (
-        <Button onClick={() => DeleteCommentAction(comment_id, userid)} variant='destructive' className='mx-auto text-white' size='icon'>
-            <Trash2Icon className="w-4 h-4" />
+        <Button onClick={() => DeleteCommentAction(comment_id, userid)} variant='ghost' className='mx-auto text-red-400' size='icon'>
+            <Trash2Icon className="h-5 w-5" />
         </Button>
     )
 }

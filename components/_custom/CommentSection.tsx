@@ -24,9 +24,9 @@ const CommentSection = async ({ note_id }: { note_id: string }) => {
     }
 
     return (
-        <div className="w-full mx-auto px-4 mt-4  ">
-            <h1 className=" font-semibold mb-2 text-left">Comments</h1>
-            <div className="w-full md:w-2/3 mx-auto space-y-2">
+        <div className="w-full md:w-2/3 mx-auto px-4 mt-4  ">
+            <h1 className="text-secondary font-semibold mb-2 text-left">Comments</h1>
+            <div className="w-full mx-auto space-y-2">
                 {comments?.map((comment: COMMENT) => (
                     <NoteComment key={comment.id} Comment={comment} />
                 ))}
