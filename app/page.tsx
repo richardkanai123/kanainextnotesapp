@@ -29,10 +29,13 @@ const Home = async (props: {
   return (
     <div className="w-full py-4 p-2 mx-auto">
       <div className="w-full my-2">
-        <div className="bg-opacity-85 bg-slate-300 dark:bg-background py-3 px-2 rounded-md flex align-middle items-center justify-center flex-col md:justify-around md:flex-row gap-4 md:gap-0 md:hidden" >
-
-          <SearchBar />
-        </div>
+        <Suspense fallback={<div className='w-full animate-pulse rounded p-2'>
+          <div className='w-1/3 h-4 bg-slate-400 dark:bg-background rounded'></div>
+        </div>}>
+          <div className="bg-opacity-85 bg-slate-300 dark:bg-background py-3 px-2 rounded-md flex align-middle items-center justify-center flex-col md:justify-around md:flex-row gap-4 md:gap-0 md:hidden" >
+            <SearchBar />
+          </div>
+        </Suspense>
       </div>
       <h1 className="text-xl font-semibold mb-2">Pinned Notes</h1>
       <ErrorBoundary errorComponent={ErrorComponent} >
