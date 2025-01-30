@@ -10,6 +10,7 @@ import { Home } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { MdAddComment } from "react-icons/md";
 import { IoChatbubbles } from "react-icons/io5";
+import { Suspense } from "react"
 
 
 const Header = () => {
@@ -21,75 +22,77 @@ const Header = () => {
 
 
     return (
-        <div className='w-full mx-auto flex align-middle items-center justify-between bg-slate-200 dark:bg-background dark:border-b'>
-            <Link href='/' className='text-2xl font-bold text-primary '>
-                <Image src="/logo.png" alt="Logo" width={40} height={30} />
-            </Link>
-            <div className="h-full align-middle items-center gap-4 hidden md:flex">
-                {
-                    pathName === '/' && <SearchBar />
-                }
-            </div>
-
-            <div className=" flex align-middle items-center gap-3 ">
-                <Link href='/' className={pathName === '/' ? activeLinkStyles : defaultLinkStyles} >
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Home className="w-6 h-6" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Home</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+        <Suspense fallback={<div className="w-full animate-pulse rounded p-2 bg-slate-400 dark:bg-background"></div>}>
+            <div className='w-full mx-auto flex align-middle items-center justify-between bg-slate-200 dark:bg-background dark:border-b'>
+                <Link href='/' className='text-2xl font-bold text-primary '>
+                    <Image src="/logo.png" alt="Logo" width={40} height={30} />
                 </Link>
-
-                <Link href='/create' className={pathName === '/create' ? activeLinkStyles : defaultLinkStyles}>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <MdAddComment className="w-6 h-6" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Add new</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                </Link>
-
-                <Link href='/shared' className={pathName === '/shared' ? activeLinkStyles : defaultLinkStyles}>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <IoChatbubbles className="w-6 h-6" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Shared Notes</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                </Link>
-                <div className="aspect-square rounded-full flex h-full align-middle justify-center items-center gap-2">
-                    <div className="">
-                        <ModeToggle />
-                    </div>
+                <div className="h-full align-middle items-center gap-4 hidden md:flex">
                     {
-                        isSignedIn ? (
-                            <div className="p-2">
-                                <UserButton appearance={{ elements: { userButtonAvatarBox: "h-8 w-8 self-center", userButtonBox__open: "h-8 w-8 self-center" } }} signInUrl="/sign-in" />
-                            </div>
-                        ) : (
-                            <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>si</AvatarFallback>
-                            </Avatar>
-
-
-                        )}
+                        pathName === '/' && <SearchBar />
+                    }
                 </div>
-            </div>
-        </div >
+
+                <div className=" flex align-middle items-center gap-3 ">
+                    <Link href='/' className={pathName === '/' ? activeLinkStyles : defaultLinkStyles} >
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Home className="w-6 h-6" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <span>Home</span>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </Link>
+
+                    <Link href='/create' className={pathName === '/create' ? activeLinkStyles : defaultLinkStyles}>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <MdAddComment className="w-6 h-6" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <span>Add new</span>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </Link>
+
+                    <Link href='/shared' className={pathName === '/shared' ? activeLinkStyles : defaultLinkStyles}>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <IoChatbubbles className="w-6 h-6" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <span>Shared Notes</span>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </Link>
+                    <div className="aspect-square rounded-full flex h-full align-middle justify-center items-center gap-2">
+                        <div className="">
+                            <ModeToggle />
+                        </div>
+                        {
+                            isSignedIn ? (
+                                <div className="p-2">
+                                    <UserButton appearance={{ elements: { userButtonAvatarBox: "h-8 w-8 self-center", userButtonBox__open: "h-8 w-8 self-center" } }} signInUrl="/sign-in" />
+                                </div>
+                            ) : (
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>si</AvatarFallback>
+                                </Avatar>
+
+
+                            )}
+                    </div>
+                </div>
+            </div >
+        </Suspense>
     )
 }
 
