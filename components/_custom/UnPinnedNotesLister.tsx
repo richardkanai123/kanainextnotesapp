@@ -2,18 +2,19 @@
 import { NOTE_TYPE } from "@/lib/Types";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import { SearchParams } from "next/dist/server/request/search-params";
 import { filterNotes } from "@/lib/utils";
 import { NoteDialog } from "./NoteDialog";
+import { useSearchParams } from "next/navigation";
 
 const UnPinnedNotesLister = ({
     Notes,
-    SearchParams,
 }: {
     Notes: NOTE_TYPE[];
-    SearchParams: SearchParams;
 }) => {
-    const { title, category } = SearchParams;
+
+    const searchParams = useSearchParams()
+    const title = searchParams.get('title') as string
+    const category = searchParams.get('category') as string
     const FilteredNotesArray = useMemo(
         () => filterNotes(title, Notes, category),
         [title, Notes, category]
