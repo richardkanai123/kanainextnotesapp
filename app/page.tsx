@@ -1,8 +1,8 @@
 import EmptyNotes from "@/components/_custom/EmptyNotes";
 import ErrorComponent from "@/components/_custom/ErrorCompponent";
-import HeroNav from "@/components/_custom/HeroNav";
 import NavCatFilter from "@/components/_custom/NavCatFilter";
 import PinnedNotesComponent from "@/components/_custom/PinnedNotesComponent";
+import SearchBar from "@/components/_custom/SearchBar";
 import UnPinnedNotesLister from "@/components/_custom/UnPinnedNotesLister";
 import { getNotes } from "@/lib/actions";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
@@ -29,7 +29,10 @@ const Home = async (props: {
   return (
     <div className="w-full py-4 p-2 mx-auto">
       <div className="w-full my-2">
-        <HeroNav />
+        <div className="bg-opacity-85 bg-slate-300 dark:bg-background py-3 px-2 rounded-md flex align-middle items-center justify-center flex-col md:justify-around md:flex-row gap-4 md:gap-0 md:hidden" >
+
+          <SearchBar />
+        </div>
       </div>
       <h1 className="text-xl font-semibold mb-2">Pinned Notes</h1>
       <ErrorBoundary errorComponent={ErrorComponent} >
