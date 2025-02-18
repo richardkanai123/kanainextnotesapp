@@ -53,7 +53,8 @@ export type PERMISSIONSTYPE = {
 export type USERSTYPE = {
     id: string;
     externalId: string;
-    username: string;
+	username: string;
+	image_url: string
 }[] | null
 
 export type COMMENT = {

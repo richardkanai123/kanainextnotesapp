@@ -6,7 +6,7 @@ import CommentSectionError from '@/components/_custom/CommentSectionError'
 import ErrorComponent from '@/components/_custom/ErrorCompponent'
 import NoteDetails from '@/components/_custom/NoteDetails'
 import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
-import { getNotebyId, getUsers } from '@/lib/actions'
+import { getNotebyId, getUserNameById, getUsers } from '@/lib/actions'
 import CommentsSkeleton from '@/components/_custom/skeletons/CommentsSkeleton'
 import CreateComment from '@/components/_custom/CreateComment'
 
@@ -16,10 +16,7 @@ const NotePage = async ({ params }: { params: Params }) => {
     const { success, note } = await getNotebyId(id as string)
     const { success: usersResOk, users } = await getUsers()
 
-    // const UserPermissions =  
-
-
-    if (!success || !note || !usersResOk || !users) {
+    if (!success || !note) {
         return (
             <div className='w-full flex flex-col text-red-500' >
                 <h1 className="text-2xl font-semibold mb-2 ">Note Not Found</h1>
@@ -32,11 +29,13 @@ const NotePage = async ({ params }: { params: Params }) => {
             </div>
         )
     }
+
+    const author = await getUserNameById(note.writer)
     return (
         <>
             <ErrorBoundary errorComponent={ErrorComponent} >
                 <Suspense fallback={<DetailsSkeleton />} >
-                    <NoteDetails users={users} note={note} />
+                    <NoteDetails author={author.success ? author.username as string : 'unknown'} users={users} note={note} />
                 </Suspense>
             </ErrorBoundary>
 
