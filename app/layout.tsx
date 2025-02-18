@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 
 export const metadata: Metadata = {
@@ -35,10 +36,13 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            <div className="w-full min-h-screen container mx-auto flex flex-col ">
-              <Header />
-              {children}
-            </div>
+            <SidebarProvider defaultOpen>
+              <div className="w-full min-h-screen container mx-auto flex flex-col ">
+                <Header />
+                {children}
+              </div>
+
+            </SidebarProvider>
             <ToastContainer limit={1} autoClose={3000} />
           </ThemeProvider>
         </body>

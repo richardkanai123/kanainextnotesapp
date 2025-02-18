@@ -19,11 +19,11 @@ const NoteHeader = ({ authorName, date, category, NoteCategoryEmoji, createdAt, 
     sharedWith: JsonValue | undefined,
     Permissions: PERMISSIONSTYPE | null
 }) => (
-    <div className="bg-opacity-70 bg-slate-300 dark:bg-background py-3 px-2 rounded-md w-full mx-auto flex align-middle justify-between dark:border-b">
-        <div className=" flex flex-col text-sm text-gray-600 dark:text-gray-200 text-left">
-            <p>By: {authorName}</p>
-            <p>Dated: {new Date(date).toLocaleDateString()}</p>
-            <p>{NoteCategoryEmoji}:{category}</p>
+    <div className="bg-opacity-70 bg-slate-300 dark:bg-background py-3 px-2 rounded-md w-full mx-auto flex align-middle flex-wrap justify-between dark:border-b">
+        <div className=" flex flex-col text-sm text-gray-600 dark:text-gray-200 text-left gap-2">
+            <p className="font-semibold">By: {authorName}</p>
+            <p className="italic underline">Dated: {new Date(date).toLocaleDateString()}</p>
+            <p className="font-semibold"><span className="bg-primary rounded-full inset-2 p-1">{NoteCategoryEmoji}</span>:{category}</p>
         </div>
 
         <NoteMeta Permissions={Permissions} createdAt={createdAt} updatedAt={updatedAt} recipients={recipients} sharedWith={sharedWith} />

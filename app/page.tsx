@@ -26,7 +26,9 @@ const Home = async () => {
         <Suspense fallback={<div className='w-full animate-pulse rounded p-2'>
           <div className='w-1/3 h-4 bg-slate-400 dark:bg-background rounded'></div>
         </div>}>
-          <SearchBar />
+          <div className="w-full mx-auto md:w-3/4 ">
+            <SearchBar />
+          </div>
         </Suspense>
       </div>
       <h1 className="text-xl font-semibold mb-2">Pinned Notes</h1>

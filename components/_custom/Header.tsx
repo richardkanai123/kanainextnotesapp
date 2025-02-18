@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { ModeToggle } from "./ModeToggle"
 import Image from "next/image"
 import { UserButton, useUser } from "@clerk/nextjs"
-import SearchBar from "./SearchBar"
+// import SearchBar from "./SearchBar"
 import { Home } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { MdAddComment } from "react-icons/md";
@@ -27,11 +27,11 @@ const Header = () => {
                 <Link href='/' className='text-2xl font-bold text-primary '>
                     <Image src="/logo.png" alt="Logo" width={40} height={30} />
                 </Link>
-                <div className="h-full align-middle items-center gap-4 hidden md:flex">
+                {/* <div className="h-full align-middle items-center gap-4 hidden md:flex">
                     {
                         pathName === '/' && <SearchBar />
                     }
-                </div>
+                </div> */}
 
                 <div className=" flex align-middle items-center gap-3 ">
                     <Link href='/' className={pathName === '/' ? activeLinkStyles : defaultLinkStyles} >

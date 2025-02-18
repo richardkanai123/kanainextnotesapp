@@ -17,7 +17,7 @@ const NoteMeta = ({ createdAt, updatedAt, recipients, sharedWith, Permissions }:
     sharedWith: JsonValue | undefined,
     Permissions: PERMISSIONSTYPE | null
 }) => (
-    <div className="flex flex-col text-gray-600 dark:text-gray-200 text-sm">
+    <div className="flex flex-col gap-2 text-gray-600 dark:text-gray-200 text-sm">
         <p>Created: {`${new Date(createdAt).toLocaleDateString()}:${new Date(createdAt).toLocaleTimeString()}`}</p>
         <p>Updated: {`${new Date(updatedAt).toLocaleDateString()}:${new Date(updatedAt).toLocaleTimeString()}`}</p>
         {sharedWith && Permissions?.canEdit && (
