@@ -9,16 +9,15 @@ import { DetailsSkeleton } from '@/components/_custom/skeletons/DetailsSkeleton'
 import { getNotebyId, getUserNameById, getUsers } from '@/lib/actions'
 import CommentsSkeleton from '@/components/_custom/skeletons/CommentsSkeleton'
 import CreateComment from '@/components/_custom/CreateComment'
+import { auth } from '@clerk/nextjs/server'
 
 
 const NotePage = async ({ params }: { params: Params }) => {
     const { id } = await params
+    const { userId, redirectToSignIn } = await auth()
     const { success, note } = await getNotebyId(id as string)
-    const CurrentUsers = await getUsers()
 
-
-    // const UserPermissions =  
-
+    if (!userId) return redirectToSignIn()
 
     if (!note || !success) {
         return (
@@ -28,9 +27,11 @@ const NotePage = async ({ params }: { params: Params }) => {
         )
     }
 
+    const CurrentUsers = await getUsers()
     const GetNoteAuthor = await getUserNameById(note.writer)
 
-    console.log(GetNoteAuthor)
+
+
     return (
         <>
             <ErrorBoundary errorComponent={ErrorComponent} >

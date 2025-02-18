@@ -317,7 +317,6 @@ export const UnPinNote = async (id: string) => {
 // ! update the note's sharedWith array with the user's id gotten from clerk but stored in the database
 
 export const ShareNoteAction = async (noteId: string, recipientId: string) => { 
-    console.log(noteId, recipientId)
     if (!noteId || !recipientId) {
         return {
             success: false,

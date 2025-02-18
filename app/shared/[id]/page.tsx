@@ -16,6 +16,7 @@ const NotePage = async ({ params }: { params: Params }) => {
     const { success, note } = await getNotebyId(id as string)
     const { success: usersResOk, users } = await getUsers()
 
+
     if (!success || !note) {
         return (
             <div className='w-full flex flex-col text-red-500' >

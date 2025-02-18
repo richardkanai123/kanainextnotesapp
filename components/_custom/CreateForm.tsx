@@ -118,7 +118,6 @@ const CreateNoteForm = () => {
 
                             const newNoteRes = await createNote(NewNoteData)
 
-                            console.log(newNoteRes.note)
                             if (newNoteRes.success) {
                                 toast.success('Note created successfully');
                                 Router.push('/create/success')
@@ -128,7 +127,6 @@ const CreateNoteForm = () => {
                         } catch (error) {
                             if (error instanceof Error) {
                                 toast.error(error.message)
-                                console.log(error.cause, error.message)
                             }
                             toast.error('An error occurred! Please try again.')
 
