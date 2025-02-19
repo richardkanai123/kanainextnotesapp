@@ -2,8 +2,7 @@ import React from 'react'
 
 const CommentsSkeleton = () => {
     return (
-        <div className='w-full animate-pulse space-y-4'>
-            <h1 className='text-2xl font-semibold mb-4'>Comments</h1>
+        <div className='w-full animate-pulse space-y-4 delay-300'>
             <div className='space-y-3'>
                 {[1, 2, 3].map((index) => (
                     <div key={index} className='flex gap-4'>
