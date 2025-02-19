@@ -2,9 +2,19 @@ import React from 'react'
 
 const CommentsSkeleton = () => {
     return (
-        <div className='w-full animate-pulse rounded'>
-            <h1 className='text-2xl font-semibold mb-2'>Comments</h1>
-            <p className='text-sm text-gray-400'>Loading comments...</p>
+        <div className='w-full animate-pulse space-y-4'>
+            <h1 className='text-2xl font-semibold mb-4'>Comments</h1>
+            <div className='space-y-3'>
+                {[1, 2, 3].map((index) => (
+                    <div key={index} className='flex gap-4'>
+                        <div className='w-10 h-10 bg-gray-200 rounded-full'></div>
+                        <div className='flex-1 space-y-2'>
+                            <div className='h-4 bg-gray-200 rounded w-1/4'></div>
+                            <div className='h-3 bg-gray-200 rounded w-3/4'></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

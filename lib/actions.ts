@@ -692,3 +692,40 @@ export const DeleteComment = async (commentId: string, writer: string) => {
         }
     }
 }
+
+
+// gets a user image by id
+export const getUserImageById = async (id: string) => { 
+    try {
+        const user = await prisma.users.findUnique({
+            where: {
+                externalId: id
+            }
+        })
+        if (!user) {
+            return {
+                success: false,
+                message: 'No user found',
+                image: null
+            }
+        }
+        return {
+            success: true,
+            message: 'Successfully fetched image',
+            image: user.image_url
+        }
+    } catch (error) {   
+        if (error instanceof Error) {
+            return {
+                success: false,
+                message: error.message,
+                image: null
+            }
+        }
+        return {
+            success: false,
+            message: 'An error occurred! Please try again.',
+            image: null
+        }
+    }
+}

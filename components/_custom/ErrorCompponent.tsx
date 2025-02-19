@@ -2,37 +2,36 @@
 // error component
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useTheme } from "next-themes";
+
 
 const ErrorComponent = () => {
-    const { theme } = useTheme()
     const router = useRouter();
     useEffect(() => {
-        toast.error('Something went wrong! Please try again.', {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: theme
-        });
-        setTimeout(() => {
+        const redirectTimer = setTimeout(() => {
             router.push('/');
-        }, 3000);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router]);
-    return (
+        }, 5000);
 
-        <div className='w-full flex flex-col' >
-            <h1 className="text-2xl font-semibold mb-2 ">Note Not Found</h1>
-            <p className="text-sm text-red-200">
-                Something went wrong!
-            </p>
-            <p>Refresh the page or try again later </p>
+        return () => clearTimeout(redirectTimer);
+    }, [router]);
+
+    return (
+        <div className='w-full flex flex-col items-center justify-center p-8 space-y-4'>
+            <h1 className="text-2xl font-semibold">Failed to Load Comments</h1>
+            <div className="text-center space-y-2">
+                <p className="text-red-500 dark:text-red-400">
+                    No note Found
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                    You will be redirected to the home page in 5 seconds.
+                </p>
+                <button
+                    onClick={() => router.push('/')}
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                >
+                    Return to Home
+                </button>
+            </div>
         </div>
     )
 }

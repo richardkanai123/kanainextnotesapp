@@ -14,7 +14,7 @@ import { Suspense } from "react"
 
 
 const Header = () => {
-    const { isSignedIn } = useUser()
+    const { isSignedIn, isLoaded } = useUser()
     const pathName = usePathname()
     const defaultLinkStyles = 'flex align-middle items-center outline-1 bg-secondary text-primary  hover:bg-transparent font-semibold relative z-0 rounded  p-2 transition-[all_0.3s_ease] after:absolute after:left-0 after:top-0 after:-z-10 after:h-full after:w-0 after:rounded after:bg-slate-700 after:transition-[all_0.3s_ease]  hover:after:w-full'
 
@@ -77,7 +77,7 @@ const Header = () => {
                             <ModeToggle />
                         </div>
                         {
-                            isSignedIn ? (
+                            (isSignedIn && isLoaded) ? (
                                 <div className="p-2">
                                     <UserButton appearance={{ elements: { userButtonAvatarBox: "h-8 w-8 self-center", userButtonBox__open: "h-8 w-8 self-center" } }} signInUrl="/sign-in" />
                                 </div>

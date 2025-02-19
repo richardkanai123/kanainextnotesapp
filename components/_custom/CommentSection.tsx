@@ -1,7 +1,8 @@
-
 import { GetComments } from "@/lib/actions"
 import { COMMENT } from "@/lib/Types"
 import NoteComment from "./NoteComment"
+import { Suspense } from "react"
+import CommentsSkeleton from "./skeletons/CommentsSkeleton"
 // Lists all existing comments for a note and allows users to add new comments
 const CommentSection = async ({ note_id }: { note_id: string }) => {
     const Comments = await GetComments(note_id)
@@ -26,11 +27,13 @@ const CommentSection = async ({ note_id }: { note_id: string }) => {
     return (
         <div className="w-full md:w-2/3 mx-auto px-4 mt-4  ">
             <h1 className="text-secondary font-semibold mb-2 text-left">Comments</h1>
-            <div className="w-full mx-auto space-y-2">
-                {comments?.map((comment: COMMENT) => (
-                    <NoteComment key={comment.id} Comment={comment} />
-                ))}
-            </div>
+            <Suspense fallback={<CommentsSkeleton />}>
+                <div className="w-full mx-auto space-y-2">
+                    {comments?.map((comment: COMMENT) => (
+                        <NoteComment key={comment.id} Comment={comment} />
+                    ))}
+                </div>
+            </Suspense>
         </div>
     )
 

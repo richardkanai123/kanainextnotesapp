@@ -5,16 +5,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import Image from 'next/image'
-const SharedNoteLink = ({ note, authorNameRes }: {
-    note: NOTE_TYPE, authorNameRes: {
-        success: boolean;
-        message: string;
-        username: null;
-    } | {
-        success: boolean;
-        message: string;
-        username: string;
-    }
+const SharedNoteLink = ({ note, username, imageurl }: {
+    note: NOTE_TYPE, username: string | null, imageurl: string | null
 }) => {
     const { id, title, createdAt } = note
     const CreatedAt = new Date(createdAt)
@@ -24,10 +16,13 @@ const SharedNoteLink = ({ note, authorNameRes }: {
 
     const { user } = useUser()
     return (
-        <Link prefetch href={`/shared/${id}`} className={pathname === `/shared/${id}` ? " text-primary border-none bg-lime-500" : ""}>
+        <Link prefetch href={`/shared/${id}`} className={pathname === `/shared/${id}` ? " text-primary border-none" : "bg-lime-300"}>
             <div className="border-b py-1 w-full flex align-middle items-center">
                 {
-                    user ? <Image src={user.imageUrl} alt={authorNameRes.username || 'user avatar loading'} width={40} height={40} className="rounded-full" /> : null
+                    user ? <div className="w-8 h-8 rounded-full overflow-hidden relative object-cover">
+                        <Image src={imageurl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'} alt={username || 'user avatar loading'} fill className="object-cover" />
+                    </div> : null
+
                 }
                 <div className="w-full flex flex-col align-middle items-center gap-2">
 
@@ -35,7 +30,6 @@ const SharedNoteLink = ({ note, authorNameRes }: {
                     <p className="text-sm italic text-right font-light">{fromNow}</p>
                 </div>
             </div>
-
         </Link >
     )
 }

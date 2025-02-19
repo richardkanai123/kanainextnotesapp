@@ -48,18 +48,14 @@ const CreateComment = ({ note }: { note: string }) => {
 
 
     if (!isSignedIn || !user) {
-        return (
-            <div className="w-full flex flex-col text-red-500" >
-                <h1 className="text-2xl font-semibold mb-2 ">You need to be signed in to comment</h1>
-            </div>
-        )
+        return null
     }
 
 
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-2/3 space-y-6 mx-auto mt-6 px-2 pb-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-2/3 space-y-2 mx-auto mt-6 px-2 pb-4">
                 <FormField
                     control={form.control}
                     name="comment"

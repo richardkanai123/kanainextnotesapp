@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import { filterNotes } from "@/lib/utils";
 import { NoteDialog } from "./NoteDialog";
 import { useSearchParams } from "next/navigation";
+import EmptyNotes from "./EmptyNotes";
 
 const UnPinnedNotesLister = ({
     Notes,
@@ -33,17 +34,24 @@ const UnPinnedNotesLister = ({
         );
     }
 
+
+    if (FilteredNotesArray?.length === 0 || !FilteredNotesArray) {
+        return (
+            <EmptyNotes />
+        )
+    }
+
     return (
+
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
-            {FilteredNotesArray?.length === 0 || !FilteredNotesArray ? (
-                <p className="text-primary">No Notes found.</p>
-            ) : (
-                FilteredNotesArray.map((note) => (
-                    <NoteDialog Note={note} key={note.id} />
-                ))
-            )}
+            {FilteredNotesArray.map((note) => (
+                <NoteDialog Note={note} key={note.id} />
+            ))
+            }
         </div>
-    );
+    )
+
+
 };
 
 export default UnPinnedNotesLister;
