@@ -1,6 +1,5 @@
 "use client";
 import { NOTE_TYPE } from "@/lib/Types";
-import Link from "next/link";
 import React, { useMemo } from "react";
 import { filterNotes } from "@/lib/utils";
 import { NoteDialog } from "./NoteDialog";
@@ -23,27 +22,43 @@ const UnPinnedNotesLister = ({
 
     if (!Notes) {
         return (
-            <div className="w-full flex flex-col items-center justify-center gap-4 py-2">
-                <p className="text-sm text-gray-500">No Notes</p>
-                <Link
-                    href="/create"
-                    className="text-sm font-semibold bg-lime-300 hover:bg-lime-400 text-sky-600 rounded-md shadow-sm  underline-offset-4 hover:underline p-3 ">
-                    Create a Note
-                </Link>
-            </div>
+            <EmptyNotes />
         );
     }
 
 
-    if (FilteredNotesArray?.length === 0 || !FilteredNotesArray) {
+    if ((FilteredNotesArray?.length === 0 || !FilteredNotesArray) && title) {
         return (
-            <EmptyNotes />
+            <div className="w-full flex justify-center items-center space-x-4">
+                <div className="w-24 h-24">
+                    <svg
+                        className="w-full h-full text-gray-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                </div>
+                <div className="text-center">
+                    <h2 className="text-2xl font-semibold">No results found</h2>
+                    <p className="text-sm text-gray-500">
+                        Try searching for something else
+                    </p>
+                </div>
+            </div>
         )
     }
 
+
     return (
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
+        <div className="w-full lg:max-w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
             {FilteredNotesArray.map((note) => (
                 <NoteDialog Note={note} key={note.id} />
             ))

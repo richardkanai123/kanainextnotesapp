@@ -13,7 +13,7 @@ export default async function SearchPage({
     searchParams: SearchParams;
 }) {
     const results = await searchParams;
-    const titleSearch = results.title;
+    const titleSearch = results.title as string | undefined;
     const notes = await getNotes();
 
     if (!notes.success) {
@@ -29,9 +29,7 @@ export default async function SearchPage({
         return <EmptyNotes />;
     }
 
-    const searchedNotes = notes.notes.filter((note) =>
-        note.title.toLocaleLowerCase().includes(titleSearch as string)
-    );
+    const searchedNotes = titleSearch === undefined || titleSearch === '' ? notes.notes : notes.notes.filter((note) => note.title.toLowerCase().includes(titleSearch?.toLowerCase()));
     return (
         <div className="w-full py-4 mx-auto space-y-4">
             <div className="w-full flex align-middle items-center border-b pb-2">
@@ -48,14 +46,33 @@ export default async function SearchPage({
 
             <Suspense fallback={<p className="text-sm text-gray-500">Loading notes...</p>}>
                 {searchedNotes.length === 0 ? (
-                    <div className="w-full flex flex-col items-center justify-center gap-4 py-2">
-                        <h1 className="text-2xl font-semibold">No notes found for:<span className="text-purple-400">{titleSearch}</span> </h1>
-                        <p>Please try again with a different search term</p>
+                    <div className="w-full flex justify-center items-center space-x-4">
+                        <div className="w-24 h-24">
+                            <svg
+                                className="w-full h-full text-gray-300"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                        </div>
+                        <div className="text-center">
+                            <h2 className="text-2xl font-semibold">No results found</h2>
+                            <p className="text-sm text-gray-500">
+                                Try searching for something else
+                            </p>
+                        </div>
                     </div>
                 )
                     : (
 
-                        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
+                        <div className="w-full lg:max-w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center ">
                             {searchedNotes.map((note) => (
                                 <NoteDialog
                                     Note={note}
