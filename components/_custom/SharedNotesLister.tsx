@@ -10,7 +10,7 @@ const SharedNotesLister = ({ notes }: { notes: NOTE_TYPE[] | undefined }) => {
         )
     }
     return (
-        <div className='w-full flex flex-col align-middle p-4 gap-2'>
+        <div className='mx-auto w-full h-full flex flex-col align-middle p-4 gap-4'>
             {
                 notes.map((note) => (
                     <SharedNoteComponent note={note} key={note.id} />
